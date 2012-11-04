@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br" lang="pt-br">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="pt-BR" />
+<title>Tunt - Fora do ar</title>
+<meta name="viewport"
+	content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<meta name="author" content="tunt.com.br" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="revisit-after" content="1000 Days" />
+<meta name="rating" content="General" />
+<meta http-equiv="cache-control" content="no-cache, no-store" />
+<meta http-equiv="pragma" content="no-cache, no-store" />
+<meta http-equiv="expires" content="Mon, 06 Jan 1990 00:00:01 GMT" />
+
+<link href="http://css.tunt.com/css/themes/0/screen/_error.css"
+	media="screen" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<!-- 503 - Service Unavailable -->
+
+<h1>TUNT.com.br</h1>
+<p class="message">Estamos de <span class="focus">ressaca</span>,
+ficaremos de <span class="focus">pé</span> mais tarde.</p>
+
+<pre>
+<?php
+if (APPLICATION_ENV == 'development') {
+	echo '<hr /><h2 style="font-size: 14px;margin-bottom: 10px;">Development use:</h2>';
+	echo '<h3>' . get_class($this->exception)    . '</h3>'
+	. '<p>'     . $this->exception->getMessage() . '</p><pre>';
+	print_r($this->exception->getTrace());
+	echo '</pre>';
+}
+?>
+</pre>
+
+</body>
+</html>

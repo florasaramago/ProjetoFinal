@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-language" content="pt-br" />
+		<link rel="stylesheet" type="text/css" href="/css/style_errors.css" />
+	</head>
+	<body>
+		<div id="wrap">
+			<div class="msg">
+				<p>500. Erro interno.</p>
+				<span>Ocorreu algum erro no sistema. Por favor tente novamente.</span>
+				<span id="back-link">
+					<SCRIPT TYPE="text/javascript">
+						<!--
+						var gb = new backlink();
+						gb.text = "Voltar";
+						gb.id = "back-link";
+						gb.write();
+						//-->
+					</SCRIPT>
+				</span>
+			</div>
+		</div>
+	
+			<?php
+			if (APPLICATION_ENV == 'development' || USER_ID == 90) {
+				echo '<hr /><h2 style="font-size: 14px;margin-bottom: 10px;">Development use:</h2>';
+				echo '<h3>' . get_class($this->exception)    . '</h3>'
+				. '<p>'     . $this->exception->getMessage() . '</p><pre>';
+				print_r($this->exception->getTrace());
+				echo '</pre>';
+			}
+			?>
+				
+	</body>
+</html>

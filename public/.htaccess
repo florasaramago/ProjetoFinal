@@ -1,0 +1,49 @@
+#RewriteEngine On
+ #RewriteCond %{HTTP_HOST} !^\florasaramago.com$
+ #RewriteRule (.*) http://florasaramago.com/$1 [R=301,L]
+ 
+ RewriteEngine On
+ RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+ RewriteRule ^(.*)$ http://%1/$1 [R=301,L] 
+ 
+ RewriteBase /
+ 
+ #FORBID TRACE AND PUT METHODS
+ RewriteCond %{REQUEST_METHOD} ^TRACE$
+ RewriteCond %{REQUEST_METHOD} ^PUT$
+ RewriteRule .* - [F]
+ 
+ #IGNORE IMG FOLDER
+ RewriteCond %{REQUEST_URI} "/img/"
+ RewriteRule (.*) $1 [L]
+ #END IGNORE IMG FOLDER
+ 
+ #IGNORE CRM FOLDER
+ RewriteCond %{REQUEST_URI} "/crm/"
+ RewriteRule (.*) $1 [L]
+ #END IGNORE CRM FOLDER
+ 
+ 
+ #IGNORE BE FOLDER
+ RewriteCond %{REQUEST_URI} "/be/"
+ RewriteRule (.*) $1 [L]
+ #END IGNORE BE FOLDER
+ 
+ 
+ #IGNORE ENVIRONMENTS FOLDER
+ RewriteCond %{REQUEST_URI} "/_tst/"
+ RewriteCond %{REQUEST_URI} "/_hmg/"
+ RewriteCond %{REQUEST_URI} "/_prd/"
+ RewriteCond %{REQUEST_URI} "/_bkp/"
+ RewriteRule (.*) $1 [L]
+ #END IGNORE ENVIRONMENTS FOLDER
+ 
+ 
+ 
+ RewriteRule !\.(js|ico|txt|gif|jpg|png|css|tpl|swf|htm|mp3|xls|xlsx|csv|pdf)$ index.php
+ 
+ 
+ ## write friendly url
+ RewriteCond %{REQUEST_FILENAME} !-f
+ RewriteCond %{REQUEST_FILENAME} !-d
+ RewriteRule .(/)?$ /index.php

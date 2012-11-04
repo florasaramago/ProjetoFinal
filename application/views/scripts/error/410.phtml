@@ -1,0 +1,15 @@
+<div style="padding: 10px 15px;">
+<h1>Erro 410</h1>
+
+<!--  Page not found -->
+<p>Ooops, esta página não existe mais.</p>
+
+<?php
+if (APPLICATION_ENV == 'development') {
+	echo '<hr /><h2 style="font-size: 14px;margin-bottom: 10px;">Development use:</h2>';
+	echo '<h3>' . get_class($this->exception)    . '</h3>'
+	. '<p>'     . $this->exception->getMessage() . '</p><pre>';
+	print_r($this->exception->getTrace());
+	echo '</pre>';
+}
+?></div>

@@ -1,0 +1,31 @@
+<div id="content">
+
+	<div id="code-editor">
+		<textarea id="html-editor"><?php echo $this->contents; ?></textarea>
+	</div>
+	
+	<div id="smartphone">
+		<form method="post" action="/index" name="openUrl">
+			<input type="text" name="url" />
+			<input type="submit" />
+		</form>
+		<div id="simulation"><?php echo $this->contents; ?></div>
+	</div>
+	<div class="clear"></div>
+	<div class="links">
+		<b>JavaScript</b><br />
+		<?php if(isset($this->javascripts))
+				foreach($this->javascripts as $file) 
+					echo $file . '<br />';
+		?>
+		<br />
+		<b>CSS</b><br />
+		<?php if(isset($this->css))
+				foreach($this->css as $file) 
+					echo $file . '<br />';
+		?>
+	</div>
+
+</div>
+
+
