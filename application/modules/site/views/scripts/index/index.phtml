@@ -1,7 +1,23 @@
 <div id="content">
 
 	<div id="code-editor">
-		<textarea id="html-editor"><?php echo $this->contents; ?></textarea>
+		<ul id="lang-menu">
+	        <li><a href="#tabs-1">HTML</a></li>
+	        <li><a href="#tabs-2">CSS</a></li>
+	        <li><a href="#tabs-3">JavaScript</a></li>
+	    </ul>
+	    <div id="tabs-1">
+	        <p>Primeira aba</p>
+	        <textarea id="html-editor"><?php echo $this->contents; ?></textarea>
+	    </div>
+	    <div id="tabs-2">
+	    	<p>Segunda aba</p>
+	        <textarea id="css-editor"><?php echo $this->firstCss; ?></textarea>
+	    </div>
+	    <div id="tabs-3">
+	        <p>Terceira aba</p>
+	        <textarea id="javascript-editor"><?php echo $this->firstJavascript; ?></textarea>
+	    </div>	
 	</div>
 	
 	<div id="smartphone">

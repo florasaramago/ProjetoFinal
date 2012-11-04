@@ -33,6 +33,9 @@ class IndexController extends Core_Controller
 					$css[] = $element->href;
 				}
 
+				
+				$this->view->firstJavascript = $curlModel->curlRequestForFiles($javascripts[0]);
+				$this->view->firstCss = $curlModel->curlRequestForFiles($css[0]);
 				$this->view->javascripts = $javascripts;
 				$this->view->css = $css;
 				$this->view->contents = $contents;

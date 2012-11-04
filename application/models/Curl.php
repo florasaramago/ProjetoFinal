@@ -35,6 +35,9 @@ class Model_Curl extends Core_Model
 			
 		//Set the URL of the page or file to download
 		curl_setopt($ch, CURLOPT_URL, $url);
+
+		//Ask cURL to return the contents in a variable instead of simply echoing them to  the browser.
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		
 		curl_setopt($ch, CURLOPT_TRANSFERTEXT, TRUE);
 		
