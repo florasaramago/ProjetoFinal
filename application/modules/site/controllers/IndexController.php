@@ -21,22 +21,22 @@ class IndexController extends Core_Controller
 			} elseif (substr_count($contents, "<p>The document has moved <a href=")) {
 				$newUrl = $curlModel->handleRedirect($contents);
 				$contents = $curlModel->curlRequest($newUrl);
-			}
-
-			$html = str_get_html($contents);
-			foreach($html->find('script') as $element) {
-				if($element->src) {
-					$javascripts[] = $element->src;
+			} else {
+				$html = str_get_html($contents);
+				foreach($html->find('script') as $element) {
+					if($element->src) {
+						$javascripts[] = $element->src;
+					}
 				}
-			}
 
-			foreach($html->find('link[rel=stylesheet]') as $element) {
-				$css[] = $element->href;
-			}
+				foreach($html->find('link[rel=stylesheet]') as $element) {
+					$css[] = $element->href;
+				}
 
-			$this->view->javascripts = $javascripts;
-			$this->view->css = $css;
-			$this->view->contents = $contents;
+				$this->view->javascripts = $javascripts;
+				$this->view->css = $css;
+				$this->view->contents = $contents;
+			}
 		}	
 	}
 	
