@@ -21,6 +21,8 @@ class Model_Curl extends Core_Model
 		
 		//Execute the cURL session
 		$contents = curl_exec ($ch);
+
+		addslashes($contents);
 		
 		//Close cURL session
 		curl_close ($ch);
@@ -49,6 +51,13 @@ class Model_Curl extends Core_Model
 		
 		return $contents;
 	}
+
+	public function tryMobileVersion ($url)
+	{
+		$newUrl = substr($url, 0, 7) . 'm.' . substr($url, 7);
+		$contents = self::curlRequest($newUrl);
+		return $contents;
+	}
 	
 	public function handleRedirect ($contents)
 	{
@@ -56,6 +65,17 @@ class Model_Curl extends Core_Model
 		$r = '">here';
 		$il = strpos($contents,$l,0)+strlen($l);
 		$ir = strpos($contents,$r,$il);
-		return substr($contents,$il,($ir-$il));
+		$newUrl = substr($contents,$il,($ir-$il));
+		$contents = self::curlRequest($newUrl);
+		return $contents;
+	}
+
+	public function correctUrl ($url) 
+	{
+		if(substr($url, 0, 7) != 'http://' || substr($url, 0, 7) != 'https://') {
+			$url = 'http://' . $url;
+		}
+
+		return $url;
 	}
 }
