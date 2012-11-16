@@ -41,7 +41,7 @@ switch( APPLICATION_ENV ) {
 		define('BASE_PUBLIC'     , BASE_PATH . DS . 'public');
 		define('BASE_URL'        , 'http://projetofinal.dev');
 		define('TEMP_PATH'		 , BASE_PUBLIC . DS . 'tmp');
-		define('CACHE_PATH'		 , BASE_PUBLIC . DS . 'cache');
+		//define('CACHE_PATH'		 , BASE_PUBLIC . DS . 'cache');
 
 		// Application Paths
 		define('PATH_PUBLIC', 'http://projetofinal.dev');
