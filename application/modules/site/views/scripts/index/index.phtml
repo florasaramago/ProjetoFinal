@@ -10,10 +10,20 @@
 	        <textarea id="html-editor"><?php echo $this->contents; ?></textarea>
 	    </div>
 	    <div id="tabs-2">
-	        <textarea id="css-editor"><?php echo $this->firstCss; ?></textarea>
+	    	<p><?php
+	    		if($this->css)
+		    		foreach($this->css as $name => $css) 
+		    			echo '<span>' . $name . ' </span>';
+	    	?></p>
+	        <textarea id="css-editor"><?php foreach($css as $c) echo $c; ?></textarea>
 	    </div>
 	    <div id="tabs-3">
-	        <textarea id="javascript-editor"><?php echo $this->firstJavascript; ?></textarea>
+	    	<p><?php
+	    		if($this->javascripts)
+		    		foreach($this->javascripts as $name => $js) 
+		    			echo '<span>' . $name . ' </span>';
+	    	?></p>
+	        <textarea id="javascript-editor"><?php foreach($js as $j) echo $j; ?></textarea>
 	    </div>	
 	</div>
 	
@@ -25,20 +35,6 @@
 		<div id="simulation"><?php echo $this->contents; ?></div>
 	</div>
 	<div class="clear"></div>
-	<div class="links">
-		<b>JavaScript</b><br />
-		<?php if(isset($this->javascripts))
-				foreach($this->javascripts as $file) 
-					echo $file . '<br />';
-		?>
-		<br />
-		<b>CSS</b><br />
-		<?php if(isset($this->css))
-				foreach($this->css as $file) 
-					echo $file . '<br />';
-		?>
-	</div>
-
 </div>
 
 

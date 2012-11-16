@@ -4,38 +4,33 @@ class IndexController extends Core_Controller
 	public function indexAction()
 	{
 		$curlModel = new Model_Curl();
+		$fileModel = new Model_File();
 		
 		if($this->_request->isPost()) {
 			$url = $this->_request->getPost('url');
-			
-			if(substr($url, 0, 7) != 'http://' || substr($url, 0, 7) != 'https://') {
-				$url = 'http://' . $url;
-			}
+			$url = $curlModel->correctUrl($url);
 			
 			$contents = $curlModel->curlRequest($url);
-			addslashes($contents);
 
 			if(!$contents) {
-				$newUrl = substr($url, 0, 7) . 'm.' . substr($url, 7);
-				$contents = $curlModel->curlRequest($newUrl);
+				$contents = $curlModel->tryMobileVersion($url);
 			} elseif (substr_count($contents, "<p>The document has moved <a href=")) {
-				$newUrl = $curlModel->handleRedirect($contents);
-				$contents = $curlModel->curlRequest($newUrl);
+				$contents = $curlModel->handleRedirect($contents);
 			} else {
 				$html = str_get_html($contents);
 				foreach($html->find('script') as $element) {
 					if($element->src) {
-						$javascripts[] = $element->src;
+						$jsUrls[] = $element->src;
 					}
 				}
 
 				foreach($html->find('link[rel=stylesheet]') as $element) {
-					$css[] = $element->href;
+					$cssUrls[] = $element->href;
 				}
 
-				
-				$this->view->firstJavascript = $curlModel->curlRequestForFiles($javascripts[0]);
-				$this->view->firstCss = $curlModel->curlRequestForFiles($css[0]);
+				$javascripts = $fileModel->createFiles($jsUrls);
+				$css = $fileModel->createFiles($cssUrls);
+
 				$this->view->javascripts = $javascripts;
 				$this->view->css = $css;
 				$this->view->contents = $contents;
