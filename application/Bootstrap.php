@@ -130,63 +130,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		}
 	}
 	
-
-	protected function _initRouter()
-	{
-		// Acesso - Cadastro
-		$route[] = array(
-				        'alias'      => 'cadastro',
-				        'module'     => 'default',
-				        'controller' => 'auth',
-                        'action'     => 'signup',
-				        'language'   => 'pt_BR',
-		);
-
-		// Acesso - Entrar (formulario)
-		$route[] = array(
-				        'alias'      => 'entrar',
-				        'module'     => 'default',
-				        'controller' => 'auth',
-                        'action'     => 'signin',
-				        'language'   => 'pt_BR',
-		);
-
-		// Autenticação - Login
-		$route[] = array(
-				        'alias'      => 'login',
-				        'module'     => 'default',
-				        'controller' => 'auth',
-                        'action'     => 'signin',
-				        'language'   => 'pt_BR',
-		);
-
-		// Autenticação - Logout
-		$route[] = array(
-						'alias'      => 'signout',
-						'module'     => 'default',
-						'controller' => 'auth',
-						'action'     => 'signout',
-						'language'   => 'pt_BR',
-		);
-
-
-		// Definir a o objeto de roteamento
-		$router = $this->frontController->getRouter( );
-
-		// Iterar todas as entradas de rotas possíveis
-		foreach ($route as $currentRoute) {
-			 
-			$data = array ( 'module'     => $currentRoute['module'],
-       						'controller' => $currentRoute['controller'], 
-        		            'action'     => $currentRoute['action'], 
-			);
-
-			$newRoute = new Zend_Controller_Router_Route( $currentRoute['alias'], $data );
-				
-			$router->addRoute( $currentRoute['alias'] , $newRoute );
-		}
-	}
-	
 	protected function _bootstrap($resource = null)
     {
         try {
