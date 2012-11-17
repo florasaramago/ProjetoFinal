@@ -10,6 +10,8 @@
 #html-editor, #css-editor, #javascript-editor {
 	width: 800px;
 	height: 507px;
+	font-family: courier;
+	font-size: 15px;
 }
 
 #code-editor { float: left; }
@@ -32,4 +34,8 @@
 	border-bottom: 0; 
 	padding: 0; 
 	white-space: nowrap;
+}
+
+.sub-tabs {
+	max-width: 800px;
 }

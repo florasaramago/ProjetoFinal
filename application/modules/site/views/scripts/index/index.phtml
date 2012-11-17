@@ -10,19 +10,19 @@
 	        <textarea id="html-editor"><?php echo $this->contents; ?></textarea>
 	    </div>
 	    <div id="tabs-2">
-	    	<p><?php
+	    	<div class="sub-tabs"><?php
 	    		if($this->css)
 		    		foreach($this->css as $name => $css) 
 		    			echo '<span>' . $name . ' </span>';
-	    	?></p>
+	    	?></div>
 	        <textarea id="css-editor"><?php foreach($css as $c) echo $c; ?></textarea>
 	    </div>
 	    <div id="tabs-3">
-	    	<p><?php
+	    	<div class="sub-tabs"><?php
 	    		if($this->javascripts)
 		    		foreach($this->javascripts as $name => $js) 
 		    			echo '<span>' . $name . ' </span>';
-	    	?></p>
+	    	?></div>
 	        <textarea id="javascript-editor"><?php foreach($js as $j) echo $j; ?></textarea>
 	    </div>	
 	</div>
