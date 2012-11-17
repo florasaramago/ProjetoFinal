@@ -25,7 +25,9 @@ class IndexController extends Core_Controller
 				}
 
 				foreach($html->find('link[rel=stylesheet]') as $element) {
-					$cssUrls[] = $element->href;
+					if($element->href) {
+						$cssUrls[] = $element->href;
+					}
 				}
 
 				$javascripts = $fileModel->createFiles($jsUrls);

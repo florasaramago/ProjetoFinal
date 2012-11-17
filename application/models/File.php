@@ -10,13 +10,12 @@ class Model_File extends Core_Model
 
 			foreach($urls as $id => $url) {
 				$fileName = substr(strrchr($urls[$id], '/'), 1);
-				$tmpfname = tempnam(sys_get_temp_dir(), $fileName);
-				$handle = fopen($tmpfname, "w");
+				$filePath = TEMP_PATH . '/' . $fileName;
+				$handle = fopen($filePath, "w");
 				fwrite($handle, $curlModel->curlRequestForFiles($urls[$id]));
-				$data[$fileName] = file($tmpfname);
-				$sources[$url] = BASE_URL . $tmpfname;
+				$data[$fileName] = file($filePath);
+				$sources[$url] = '/temp/' . $fileName;
 				fclose($handle);
-				unlink($tmpfname);
 			}
 
 			return array('data' => $data, 'sources' => $sources);
@@ -31,7 +30,7 @@ class Model_File extends Core_Model
 		foreach($html->find('script') as $element) {
 			foreach($sources as $id => $source) {
 				if($element->src == $id) {
-					$contents = str_replace($element->src, $source, $contents);
+					$contents = str_replace($element->src, BASE_URL . $source, $contents);
 				}
 			}
 		}
@@ -43,8 +42,8 @@ class Model_File extends Core_Model
 		$html = str_get_html($contents);
 		foreach($html->find('link[rel=stylesheet]') as $element) {
 			foreach($sources as $id => $source) {
-				if($element->src == $id) {
-					$contents = str_replace($element->src, $source, $contents);
+				if($element->href == $id) {
+					$contents = str_replace($element->href, BASE_URL . $source, $contents);
 				}
 			}
 		}
