@@ -40,7 +40,7 @@ switch( APPLICATION_ENV ) {
 		define('BASE_PATH'       , '/Library/WebServer/Documents/ProjetoFinal');
 		define('BASE_PUBLIC'     , BASE_PATH . DS . 'public');
 		define('BASE_URL'        , 'http://projetofinal.dev');
-		define('TEMP_PATH'		 , BASE_PUBLIC . DS . 'tmp');
+		define('TEMP_PATH'		 , BASE_PUBLIC . DS . 'temp');
 		//define('CACHE_PATH'		 , BASE_PUBLIC . DS . 'cache');
 
 		// Application Paths
