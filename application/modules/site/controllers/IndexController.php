@@ -31,8 +31,13 @@ class IndexController extends Core_Controller
 				$javascripts = $fileModel->createFiles($jsUrls);
 				$css = $fileModel->createFiles($cssUrls);
 
-				$this->view->javascripts = $javascripts;
-				$this->view->css = $css;
+				$contents = $fileModel->replaceJavascriptFiles($contents, $javascripts['sources']);
+				$contents = $fileModel->replaceCssFiles($contents, $css['sources']);
+
+				//_d($contents);
+
+				$this->view->javascripts = $javascripts['data'];
+				$this->view->css = $css['data'];
 				$this->view->contents = $contents;
 			}
 		}	
