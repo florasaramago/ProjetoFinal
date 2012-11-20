@@ -18,6 +18,7 @@ class IndexController extends Core_Controller
 				$contents = $curlModel->handleRedirect($contents);
 			} else {
 				$html = str_get_html($contents);
+
 				foreach($html->find('script') as $element) {
 					if($element->src) {
 						$jsUrls[] = $element->src;
@@ -35,8 +36,6 @@ class IndexController extends Core_Controller
 
 				$contents = $fileModel->replaceJavascriptFiles($contents, $javascripts['sources']);
 				$contents = $fileModel->replaceCssFiles($contents, $css['sources']);
-
-				//_d($contents);
 
 				$this->view->javascripts = $javascripts['data'];
 				$this->view->css = $css['data'];
