@@ -39,3 +39,18 @@
 .sub-tabs {
 	max-width: 800px;
 }
+
+.smaller {
+	-ms-transition-duration: 0.2s;
+	-ms-transform: scale(0.73);
+	-webkit-transition-duration: 0.2s;
+	-webkit-transform: scale(0.73);
+	-moz-transition-duration: 0.2s;
+	-moz-transform: scale(0.73);
+	-o-transition-duration: 0.2s;
+	-o-transform: scale(0.73);
+}
+
+#resize {
+	cursor: pointer;
+}
