@@ -52,49 +52,49 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	
 	protected function _initSession( )
 	{
-		try {
-			$router = $this->frontController->getRouter();
-			$request =  new Zend_Controller_Request_Http();
-			$router->route($request);
+		// try {
+			// $router = $this->frontController->getRouter();
+			// $request =  new Zend_Controller_Request_Http();
+			// $router->route($request);
 			
-			if($request->getModuleName() != 'site' || $request->getControllerName() == 'auth') {
-				// Config Zend_Session
-				$config = Zend_Registry::get('config')->toArray();
-				//Zend_Session::setOptions($config);
-				Zend_Session::setOptions( array (
-		        		'name'                => $config['name'],  // Own name
-		        		'cookie_httponly'     => true,             // XSS hardening
-		                'gc_probability'      => $config['gc_probability'], 
-		                'gc_divisor'          => $config['gc_divisor'], 
-		        		'gc_maxlifetime'      => $config['gc_maxlifetime'],
-		                'remember_me_seconds' => $config['remember_me_seconds'],
-				) );				
+			// if($request->getModuleName() != 'site' || $request->getControllerName() == 'auth') {
+			// 	// Config Zend_Session
+			// 	$config = Zend_Registry::get('config')->toArray();
+			// 	//Zend_Session::setOptions($config);
+			// 	Zend_Session::setOptions( array (
+		 //        		'name'                => $config['name'],  // Own name
+		 //        		'cookie_httponly'     => true,             // XSS hardening
+		 //                'gc_probability'      => $config['gc_probability'], 
+		 //                'gc_divisor'          => $config['gc_divisor'], 
+		 //        		'gc_maxlifetime'      => $config['gc_maxlifetime'],
+		 //                'remember_me_seconds' => $config['remember_me_seconds'],
+			// 	) );				
 				
 				
-				// Create your Zend_Session_SaveHandler_DbTable
-				$configHandler = array(
-				    'name'           => 'session',
-				    'primary'        => 'id',
-				    'modifiedColumn' => 'modified',
-				    'dataColumn'     => 'data',
-				    'lifetimeColumn' => 'lifetime',
-					'useridColumn'	 => 'user_id'
-				);
+			// 	// Create your Zend_Session_SaveHandler_DbTable
+			// 	$configHandler = array(
+			// 	    'name'           => 'session',
+			// 	    'primary'        => 'id',
+			// 	    'modifiedColumn' => 'modified',
+			// 	    'dataColumn'     => 'data',
+			// 	    'lifetimeColumn' => 'lifetime',
+			// 		'useridColumn'	 => 'user_id'
+			// 	);
 				
-				$saveHandler = new My_Session_SaveHandler_DbTable($configHandler);
-				$saveHandler->setLifetime( $config['gc_maxlifetime'] );
+			// 	$saveHandler = new My_Session_SaveHandler_DbTable($configHandler);
+			// 	$saveHandler->setLifetime( $config['gc_maxlifetime'] );
 				
-				// Set the save handler for Zend_Session
-				Zend_Session::setSaveHandler($saveHandler);
+			// 	// Set the save handler for Zend_Session
+			// 	Zend_Session::setSaveHandler($saveHandler);
 			
 				// Start Session
 				Zend_Session::start();
-			}
-		} catch (Exception $e) {
-			if(APPLICATION_ENV == 'development') {
-				echo $e->getMessage();
-			}
-		}
+		// 	}
+		// } catch (Exception $e) {
+		// 	if(APPLICATION_ENV == 'development') {
+		// 		echo $e->getMessage();
+		// 	}
+		// }
 	}
 
 	protected function _initLayout( )

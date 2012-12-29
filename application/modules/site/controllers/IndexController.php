@@ -31,8 +31,8 @@ class IndexController extends Core_Controller
 					}
 				}
 
-				$javascripts = $fileModel->createFiles($jsUrls);
-				$css = $fileModel->createFiles($cssUrls);
+				$javascripts = $fileModel->createFiles($jsUrls, $url);
+				$css = $fileModel->createFiles($cssUrls, $url);
 
 				$contents = $fileModel->replaceJavascriptFiles($contents, $javascripts['sources']);
 				$contents = $fileModel->replaceCssFiles($contents, $css['sources']);
