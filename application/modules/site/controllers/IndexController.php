@@ -48,15 +48,31 @@ class IndexController extends Core_Controller
 	{
 		if ($this->_request->isXmlHttpRequest()) {
 			if($this->_request->isPost()) {
-				//UPDATE FILE ON TEMP FOLDER
-				//$this->_helper->json->sendJson($filterId);
+			//UPDATE FILE ON TEMP FOLDER
+			//$this->_helper->json->sendJson($filterId);
 			} else {
 				exit;
 			}
-		}
-		else {
+		} else {
 			exit;
 		}
+	}
+
+	public function changeSubTabAction ()
+	{
+	if ($this->_request->isXmlHttpRequest()) {
+	if($this->_request->isPost()) {
+	$fileName = $this->_request->getPost('file');
+	$content = $this->_request->getPost('text');
+
+	$this->_helper->json->sendJson($filterId);
+	} else {
+	exit;
+	}
+	}
+	else {
+	exit;
+	}
 	}
 	
 }

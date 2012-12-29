@@ -9,15 +9,21 @@ class Model_File extends Core_Model
 			$sources = array();
 
 			$host = self::getHostFromUrl($hostUrl);
-			$path = TEMP_PATH . '/' . Zend_Session::getId() . '/' . $host;
+			$sessionPath = TEMP_PATH . '/' . Zend_Session::getId();
 
-			if(!is_dir($path)) {
-				mkdir($path);
+			if(!is_dir($sessionPath)) {
+				mkdir($sessionPath, 0777);
+			}
+
+			$hostPath = $sessionPath . '/' . $host;
+
+			if(!is_dir($hostPath)) {
+				mkdir($hostPath, 0777);
 			}
 
 			foreach($urls as $id => $url) {
 				$fileName = substr(strrchr($urls[$id], '/'), 1);
-				$filePath = $path . '/'. $fileName;
+				$filePath = $hostPath . '/'. $fileName;
 				$handle = fopen($filePath, "w");
 				fwrite($handle, $curlModel->curlRequestForFiles($urls[$id]));
 				$data[$fileName] = file($filePath);

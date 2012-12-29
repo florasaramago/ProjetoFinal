@@ -13,7 +13,7 @@
 	    	<div class="sub-tabs"><?php
 	    		if($this->css)
 		    		foreach($this->css as $name => $css) 
-		    			echo '<span>' . $name . ' </span>';
+		    			echo '<span class="sub-tab">' . $name . ' </span>';
 	    	?></div>
 	        <textarea id="css-editor"><?php foreach($css as $c) echo $c; ?></textarea>
 	    </div>
