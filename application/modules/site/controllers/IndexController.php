@@ -43,5 +43,20 @@ class IndexController extends Core_Controller
 			}
 		}	
 	}
+
+	public function updateFileAction ()
+	{
+		if ($this->_request->isXmlHttpRequest()) {
+			if($this->_request->isPost()) {
+				//UPDATE FILE ON TEMP FOLDER
+				//$this->_helper->json->sendJson($filterId);
+			} else {
+				exit;
+			}
+		}
+		else {
+			exit;
+		}
+	}
 	
 }
