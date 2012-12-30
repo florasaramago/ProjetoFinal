@@ -48,8 +48,12 @@ class IndexController extends Core_Controller
 	{
 		if ($this->_request->isXmlHttpRequest()) {
 			if($this->_request->isPost()) {
-			//UPDATE FILE ON TEMP FOLDER
-			//$this->_helper->json->sendJson($filterId);
+				$fileModel = new Model_File();
+
+				$fileName = $this->_request->getPost('file');
+				$content = $this->_request->getPost('text');
+
+				$this->_helper->json->sendJson($fileModel->updateFile($fileName, $content));
 			} else {
 				exit;
 			}
@@ -60,19 +64,24 @@ class IndexController extends Core_Controller
 
 	public function changeSubTabAction ()
 	{
-	if ($this->_request->isXmlHttpRequest()) {
-	if($this->_request->isPost()) {
-	$fileName = $this->_request->getPost('file');
-	$content = $this->_request->getPost('text');
+		if ($this->_request->isXmlHttpRequest()) {
+			if($this->_request->isPost()) {
+				$fileName = $this->_request->getPost('file');
 
-	$this->_helper->json->sendJson($filterId);
-	} else {
-	exit;
-	}
-	}
-	else {
-	exit;
-	}
+				$contentsArray = file($filePath);
+
+				foreach($contentsArray as $line) {
+					$contentsString .= $line . '\n';
+				}
+
+				$this->_helper->json->sendJson($contentsString);
+			} else {
+				exit;
+			}
+		}
+		else {
+			exit;
+		}
 	}
 	
 }

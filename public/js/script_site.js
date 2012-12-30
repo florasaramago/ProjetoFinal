@@ -9,9 +9,9 @@ $(document).ready(function()
 	$('#css-editor, #javascript-editor').keyup(function () { 
 		$.ajax({
 	     	url: '/index/update-file/',
-	     	data: $(this),
+	     	data: 'file='+ $(this).attr('file') +'&text='+ $(this).parent('.sub-tabs').parent('div').children('textarea').val(),
 	         success: function(response){
-	         	console.log('yay');
+	         	console.log(response);
 	         }, 
 	         error: function (data) {
 	         	console.log('omg');
@@ -26,9 +26,11 @@ $(document).ready(function()
 
 	$('.sub-tab').on('click', function() {
 		alert('uepa!');
+		$(this).siblings().removeClass('active-tab');
+		$(this).addClass('active-tab');
 		$.ajax({
 	     	url: '/index/change-sub-tab/',
-	     	data: 'file='+ $(this).text() +'&text='+ $(this).parent('.sub-tabs').parent('div').children('textarea').val(),
+	     	data: 'file='+ $('.active-tab').attr('file'),
 	         success: function(response){
 	         	console.log(response);
 	         }, 

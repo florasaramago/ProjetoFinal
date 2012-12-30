@@ -13,17 +13,17 @@
 	    	<div class="sub-tabs"><?php
 	    		if($this->css)
 		    		foreach($this->css as $name => $css) 
-		    			echo '<span class="sub-tab">' . $name . ' </span>';
+		    			echo '<span class="sub-tab" file="'. $css[0] .'">' . $name . ' </span>';
 	    	?></div>
-	        <textarea id="css-editor"><?php foreach($css as $c) echo $c; ?></textarea>
+	        <textarea id="css-editor"><?php foreach($css[1] as $c) echo $c; ?></textarea>
 	    </div>
 	    <div id="tabs-3">
 	    	<div class="sub-tabs"><?php
 	    		if($this->javascripts)
 		    		foreach($this->javascripts as $name => $js) 
-		    			echo '<span>' . $name . ' </span>';
+		    			echo '<span class="sub-tab" file="'. $javascripts[0] .'">' . $name . ' </span>';
 	    	?></div>
-	        <textarea id="javascript-editor"><?php foreach($js as $j) echo $j; ?></textarea>
+	        <textarea id="javascript-editor"><?php foreach($js[1] as $j) echo $j; ?></textarea>
 	    </div>	
 	</div>
 	

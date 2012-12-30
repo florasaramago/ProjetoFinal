@@ -26,7 +26,8 @@ class Model_File extends Core_Model
 				$filePath = $hostPath . '/'. $fileName;
 				$handle = fopen($filePath, "w");
 				fwrite($handle, $curlModel->curlRequestForFiles($urls[$id]));
-				$data[$fileName] = file($filePath);
+				$data[$fileName][0] = $filePath;
+				$data[$fileName][1] = file($filePath);
 				$sources[$url] = '/temp/' . Zend_Session::getId() . '/' . $host . '/' . $fileName;
 				fclose($handle);
 			}
@@ -73,5 +74,12 @@ class Model_File extends Core_Model
 		} else {
 			return $pieces[0];
 		}
+	}
+
+	public function updateFile ($fileName, $newContents)
+	{
+		$handle = fopen($fileName, "w");
+		fwrite($handle, $newContents);
+		fclose($handle);
 	}
 }
