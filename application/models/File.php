@@ -23,12 +23,12 @@ class Model_File extends Core_Model
 
 			foreach($urls as $id => $url) {
 				$fileName = substr(strrchr($urls[$id], '/'), 1);
-				$filePath = $hostPath . '/'. $fileName;
+				$filePath = '/temp/' . Zend_Session::getId() . '/' . $host . '/' . $fileName;
 				$handle = fopen($filePath, "w");
 				fwrite($handle, $curlModel->curlRequestForFiles($urls[$id]));
 				$data[$fileName][0] = $filePath;
 				$data[$fileName][1] = file($filePath);
-				$sources[$url] = '/temp/' . Zend_Session::getId() . '/' . $host . '/' . $fileName;
+				$sources[$url] = $filePath;
 				fclose($handle);
 			}
 

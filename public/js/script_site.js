@@ -25,14 +25,14 @@ $(document).ready(function()
 	});
 
 	$('.sub-tab').on('click', function() {
-		alert('uepa!');
 		$(this).siblings().removeClass('active-tab');
 		$(this).addClass('active-tab');
+
 		$.ajax({
 	     	url: '/index/change-sub-tab/',
 	     	data: 'file='+ $('.active-tab').attr('file'),
 	         success: function(response){
-	         	console.log(response);
+	         	$('#css-editor').val(response);
 	         }, 
 	         error: function (data) {
 	         	console.log('omg');

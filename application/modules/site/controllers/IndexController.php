@@ -66,13 +66,10 @@ class IndexController extends Core_Controller
 	{
 		if ($this->_request->isXmlHttpRequest()) {
 			if($this->_request->isPost()) {
+				$curlModel = new Model_Curl();
 				$fileName = $this->_request->getPost('file');
 
-				$contentsArray = file($filePath);
-
-				foreach($contentsArray as $line) {
-					$contentsString .= $line . '\n';
-				}
+				$contentsString = $curlModel->curlRequestForFiles('http://projetofinal.dev' . $fileName);
 
 				$this->_helper->json->sendJson($contentsString);
 			} else {
