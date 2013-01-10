@@ -1,10 +1,15 @@
 <div id="content">
 
 	<div id="code-editor">
+		<form class="url-form" method="post" action="/index" name="openUrl">
+			<label for="url">URL:</label>
+			<input type="text" name="url" />
+			<input type="submit" value="Ir"/>
+		</form>
 		<ul id="lang-menu">
 	        <li><a href="#tabs-1">HTML</a></li>
-	        <li><a href="#tabs-2">CSS</a></li>
-	        <li><a href="#tabs-3">JavaScript</a></li>
+	        <li l="css"><a href="#tabs-2">CSS</a></li>
+	        <li l="javascript"><a href="#tabs-3">JavaScript</a></li>
 	    </ul>
 	    <div id="tabs-1">
 	        <textarea id="html-editor"><?php echo $this->contents; ?></textarea>
@@ -15,23 +20,19 @@
 		    		foreach($this->css as $name => $css) 
 		    			echo '<span class="sub-tab" file="'. $css[0] .'">' . $name . ' </span>';
 	    	?></div>
-	        <textarea id="css-editor"><?php foreach($css[1] as $c) echo $c; ?></textarea>
+	        <textarea id="css-editor"><?php if($css[1]) { foreach($css[1] as $c) echo $c; } ?></textarea>
 	    </div>
 	    <div id="tabs-3">
 	    	<div class="sub-tabs"><?php
 	    		if($this->javascripts)
 		    		foreach($this->javascripts as $name => $js) 
-		    			echo '<span class="sub-tab" file="'. $javascripts[0] .'">' . $name . ' </span>';
+		    			echo '<span class="sub-tab" file="'. $js[0] .'">' . $name . ' </span>';
 	    	?></div>
-	        <textarea id="javascript-editor"><?php foreach($js[1] as $j) echo $j; ?></textarea>
+	        <textarea id="javascript-editor"><?php if($js[1]) { foreach($js[1] as $j) echo $j; } ?></textarea>
 	    </div>	
 	</div>
 	
 	<div id="smartphone">
-		<form method="post" action="/index" name="openUrl">
-			<input type="text" name="url" />
-			<input type="submit" />
-		</form>
 		<div id="simulation"><?php echo $this->contents; ?></div>
 		<span id="resize">Resize</span>
 	</div>

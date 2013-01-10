@@ -32,7 +32,7 @@ $(document).ready(function()
 	     	url: '/index/change-sub-tab/',
 	     	data: 'file='+ $('.active-tab').attr('file'),
 	         success: function(response){
-	         	$('#css-editor').val(response);
+	         	$('#' + $('.ui-tabs-active').attr('l') + '-editor').val(response);
 	         }, 
 	         error: function (data) {
 	         	console.log('omg');
@@ -46,7 +46,7 @@ $(document).ready(function()
 	});
 
 	$('#resize').on('click', function() {
-		$('#simulation').toggleClass('smaller');
+		$('#smartphone').toggleClass('smaller');
 	});
 	
 });
