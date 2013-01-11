@@ -114,7 +114,7 @@ input[type=text]:focus, textarea:focus {
 
 .ui-tabs .ui-tabs-panel {
 	display: block;
-	border-width: 1px;
+	border: 1px solid #AAA;
 	padding: 1em 1.4em;
 	background-image: url(../img/brushed_alu.png);
 	-moz-border-radius: 4px;
