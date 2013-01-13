@@ -24,8 +24,21 @@ $(document).ready(function()
 		});
 	});
 
+	$('#ui-id-2').on('click', function() {
+		if(!$('#tabs-2').children('.sub-tabs').children('.sub-tab').hasClass('active-tab')) {
+			$('#tabs-2').children('.sub-tabs').children('span:first').addClass('active-tab');
+		}
+	});
+
+	$('#ui-id-3').on('click', function() {
+		if(!$('#tabs-3').children('.sub-tabs').children('.sub-tab').hasClass('active-tab')) {
+			$('#tabs-3').children('.sub-tabs').children('span:first').addClass('active-tab');
+		}
+	});
+
 	$('.sub-tab').on('click', function() {
-		$(this).siblings().removeClass('active-tab');
+		$('.active-tab').removeClass('active-tab');
+		//$(this).siblings().removeClass('active-tab');
 		$(this).addClass('active-tab');
 
 		$.ajax({
