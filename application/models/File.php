@@ -24,10 +24,10 @@ class Model_File extends Core_Model
 			foreach($urls as $id => $url) {
 				$fileName = substr(strrchr($urls[$id], '/'), 1);
 				$filePath = '/temp/' . Zend_Session::getId() . '/' . $host . '/' . $fileName;
-				$handle = fopen($filePath, "w");
+				$handle = fopen($hostPath . '/'. $fileName, "w");
 				fwrite($handle, $curlModel->curlRequestForFiles($urls[$id]));
 				$data[$fileName][0] = $filePath;
-				$data[$fileName][1] = file($filePath);
+				$data[$fileName][1] = file($hostPath . '/'. $fileName);
 				$sources[$url] = $filePath;
 				fclose($handle);
 			}
