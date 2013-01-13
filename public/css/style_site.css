@@ -87,6 +87,25 @@ input[type=text]:focus, textarea:focus {
 	max-width: 800px;
 }
 
+.sub-tab {
+	border: 1px solid #AAA;
+	padding: 1px 6px 1px 6px;
+	margin: 0px 10px 0px 0px;
+	background-color: #D8D8D8;
+	color: #666;
+	font-size: 15px;
+	cursor: pointer;
+
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.active-tab {
+	background-color: #AAA;
+}
+
 .smaller {
 	-ms-transition-duration: 1s;
 	-ms-transform: scale(0.73);
