@@ -83,6 +83,19 @@ input[type=text]:focus, textarea:focus {
 	outline: none;
 }
 
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+	background-image: url(../img/brushed_alu.png);
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+	background: #BDBDBD;
+	color: #EEE;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active a{
+	color: #EEE;
+}
+
 .sub-tabs {
 	max-width: 800px;
 }
@@ -103,7 +116,8 @@ input[type=text]:focus, textarea:focus {
 }
 
 .active-tab {
-	background-color: #AAA;
+	background-color: #BDBDBD;
+	color: #EEE;
 }
 
 .smaller {
