@@ -47,6 +47,20 @@ input[type=text]:focus, textarea:focus {
 	font-size: 15px;
 }
 
+.CodeMirror {
+	background-color: #FFF;
+	width: 100%;
+	max-width:900px;
+	height: 685px;
+	font-family: courier;
+	font-size: 15px;
+
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
+}
+
 #code-editor { 
 	float: left;
 	width: 68%; 
