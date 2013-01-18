@@ -11,7 +11,7 @@ $(document).ready(function()
 	//var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('html-editor', { mode:  "html" }));
 
 	var editor = CodeMirror.fromTextArea(document.getElementById('html-editor'), {
-		lineNumbers: true, mode:  "html", theme: "solarized"
+		lineNumbers: true, mode: "text/html", theme: "solarized", tabMode: "indent"
 	});
  
  	//$('.CodeMirror').addClass('cm-s-solarized').addClass('cm-s-light');
