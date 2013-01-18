@@ -8,7 +8,14 @@ $(document).ready(function()
 
 	$('#code-editor').tabs();
 
-	var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('html-editor', { mode:  "html" }));
+	//var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('html-editor', { mode:  "html" }));
+
+	var editor = CodeMirror.fromTextArea(document.getElementById('html-editor'), {
+		lineNumbers: true, mode:  "html", theme: "solarized"
+	});
+ 
+ 	//$('.CodeMirror').addClass('cm-s-solarized').addClass('cm-s-light');
+	//editor.setOption("theme", "eclipse");
 
 	$('#html-editor').keyup(function () { 
 		$('#simulation').html($('#html-editor').val());
@@ -37,7 +44,13 @@ $(document).ready(function()
 			$('#tabs-2').children('.sub-tabs').children('span:first').addClass('active-tab');
 		}
 
-		var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('css-editor', { mode:  "css" }));
+		//var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('css-editor', { mode:  "css" }));
+
+		var editor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
+			lineNumbers: true, mode:  "css", theme: "solarized"
+		});
+ 
+ 	//$('.CodeMirror').addClass('cm-s-solarized').addClass('cm-s-light');
 	});
 
 	$('#ui-id-3').on('click', function() {
@@ -45,7 +58,10 @@ $(document).ready(function()
 			$('#tabs-3').children('.sub-tabs').children('span:first').addClass('active-tab');
 		}
 
-		var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('javascript-editor', { mode:  "javascript" }));
+		//var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('javascript-editor', { mode:  "javascript" }));
+		var editor = CodeMirror.fromTextArea(document.getElementById('javascript-editor'), {
+			lineNumbers: true, mode:  "javascript", theme: "solarized"
+		});
 	});
 
 	$('.sub-tab').on('click', function() {

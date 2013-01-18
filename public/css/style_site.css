@@ -47,7 +47,7 @@ input[type=text]:focus, textarea:focus {
 	font-size: 15px;
 }
 
-.CodeMirror {
+.CodeMirror, .cm-s-solarized {
 	background-color: #FFF;
 	width: 100%;
 	max-width:900px;
@@ -59,6 +59,31 @@ input[type=text]:focus, textarea:focus {
 	-webkit-border-radius: 4px;
 	-khtml-border-radius: 4px;
 	border-radius: 4px;
+}
+
+.cm-s-solarized .CodeMirror-gutters {
+	padding: 0 2px 0 11px;
+	box-shadow: 0 -9px 7px black;
+	border-right: 1px solid;
+}
+
+.CodeMirror-gutter .CodeMirror-linenumbers {
+	width: 30px !important;
+}
+
+.CodeMirror-linenumber .CodeMirror-gutter-elt {
+	left: 0px !important;
+	margin-right: 3px !important;
+	width: 25px !important;
+	text-align: right;
+}
+
+.cm-s-solarized .CodeMirror-linenumber {
+	color: rgba(79, 103, 111, 0.57);
+}
+
+.CodeMirror-sizer {
+	margin-left: 47px !important;
 }
 
 #code-editor { 
@@ -112,6 +137,7 @@ input[type=text]:focus, textarea:focus {
 
 .sub-tabs {
 	max-width: 800px;
+	padding-bottom: 10px;
 }
 
 .sub-tab {
