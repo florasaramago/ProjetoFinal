@@ -33,7 +33,7 @@ $(document).ready(function()
 			$('#tabs-2').children('.sub-tabs').children('span:first').addClass('active-tab');
 		}
 
-		var editor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
+		var cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
 			lineNumbers: true, mode:  "css", theme: "solarized"
 		});
 	});
@@ -43,7 +43,7 @@ $(document).ready(function()
 			$('#tabs-3').children('.sub-tabs').children('span:first').addClass('active-tab');
 		}
 
-		var editor = CodeMirror.fromTextArea(document.getElementById('javascript-editor'), {
+		var jsEditor = CodeMirror.fromTextArea(document.getElementById('javascript-editor'), {
 			lineNumbers: true, mode:  "javascript", theme: "solarized"
 		});
 	});
