@@ -2,12 +2,12 @@ $(document).ready(function()
 {
 	$('#code-editor').tabs();
 
-	var editor = CodeMirror.fromTextArea(document.getElementById('html-editor'), {
+	var htmlEditor = CodeMirror.fromTextArea(document.getElementById('html-editor'), {
 		lineNumbers: true, mode: "text/html", theme: "solarized", tabMode: "indent"
 	});
 
-	$('#html-editor').keyup(function () { 
-		$('#simulation').html($('#html-editor').val());
+	$('.CodeMirror, .cm-s-solarized').on('keyup', function () { 
+		$('#simulation').html(htmlEditor.getValue());
 	});
 
 	$('#css-editor, #javascript-editor').keyup(function () { 
