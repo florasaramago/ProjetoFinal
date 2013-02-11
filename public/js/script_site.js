@@ -7,25 +7,12 @@ $(document).ready(function()
 	});
 
 	$('.CodeMirror, .cm-s-solarized').on('keyup', function () { 
+		alert('epa!');
 		$('#simulation').html(htmlEditor.getValue());
-	});
 
-	$('#css-editor, #javascript-editor').keyup(function () { 
-		$.ajax({
-	     	url: '/index/update-file/',
-	     	data: 'file='+ $(this).attr('file') +'&text='+ $(this).parent('.sub-tabs').parent('div').children('textarea').val(),
-	         success: function(response){
-	         	console.log(response);
-	         }, 
-	         error: function (data) {
-	         	console.log('omg');
-	         },
-	         complete: function(data) {
-	         	$('#simulation').html($('#html-editor').val());
-	         },
-			type: "POST", 
-			dataType: "json"
-		});
+		if($(this).siblings('textarea').hasClass('css')) {
+			alert("yahoo!");
+		}
 	});
 
 	$('#ui-id-2').on('click', function() {
@@ -36,6 +23,33 @@ $(document).ready(function()
 		var cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
 			lineNumbers: true, mode:  "css", theme: "solarized"
 		});
+
+		$('.CodeMirror, .cm-s-solarized').on('keyup', function () { 
+			alert("1");
+			if($(this).siblings('textarea').hasClass('css-editor')) {
+				alert("2");
+				var activeTab = $(this).siblings('.sub-tabs').children('.active-tab');
+
+				$.ajax({
+			     	url: '/index/update-file/',
+			     	data: 'file='+ activeTab.attr('file') +'&text='+ cssEditor.getValue(),
+			         success: function(response){
+			         	alert("4");
+			         	console.log(response);
+			         }, 
+			         error: function (data) {
+			         	alert("5");
+			         	console.log('omg');
+			         },
+			         complete: function(data) {
+			         	alert("6");
+			         	$('#simulation').html(htmlEditor.getValue());
+			         },
+					type: "POST", 
+					dataType: "json"
+				});
+			}
+		});
 	});
 
 	$('#ui-id-3').on('click', function() {
@@ -45,6 +59,12 @@ $(document).ready(function()
 
 		var jsEditor = CodeMirror.fromTextArea(document.getElementById('javascript-editor'), {
 			lineNumbers: true, mode:  "javascript", theme: "solarized"
+		});
+
+		$('.CodeMirror, .cm-s-solarized').on('keyup', function () { 
+			if($(this).siblings('textarea').hasClass('javascript-editor')) {
+				$('#simulation').html(htmlEditor.getValue());
+			}
 		});
 	});
 
