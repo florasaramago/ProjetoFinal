@@ -78,8 +78,9 @@ class Model_File extends Core_Model
 
 	public function updateFile ($fileName, $newContents)
 	{
-		$handle = fopen($fileName, "w");
+		$handle = fopen($_SERVER['DOCUMENT_ROOT'] . $fileName, "w");
 		fwrite($handle, $newContents);
 		fclose($handle);
+		return $newContents;
 	}
 }
