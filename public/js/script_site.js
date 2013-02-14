@@ -1,5 +1,7 @@
 $(document).ready(function()
 {
+	var cssEditor;
+
 	//Create tabs
 	$('#code-editor').tabs();
 
@@ -19,12 +21,15 @@ $(document).ready(function()
 		//Set first sub-tab as active
 		if(!$('#tabs-2').children('.sub-tabs').children('.sub-tab').hasClass('active-tab')) {
 			$('#tabs-2').children('.sub-tabs').children('span:first').addClass('active-tab');
+			$('#tabs-2').children('.sub-tabs').children('span:first').trigger('click');
 		}
 
 		//Create CodeMirror textarea for JavaScript
-		var cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
-			lineNumbers: true, mode: "css", theme: "solarized"
-		});
+		if(!cssEditor) {
+			cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
+				lineNumbers: true, mode: "css", theme: "solarized"
+			});
+		}
 
 		//Edit CSS code
 		$('.CodeMirror, .cm-s-solarized').on('keyup', function () { 
@@ -32,12 +37,11 @@ $(document).ready(function()
 			if($(this).siblings('textarea').hasClass('css-editor')) {
 				//Check which sub-tab is active
 				var activeTab = $(this).siblings('.sub-tabs').children('.active-tab');
-				console.log(activeTab.attr('file'));
-
+				console.log('file='+ activeTab.attr('file') +'&text='+ cssEditor.getValue());
 				//Update the file on server
 				$.ajax({
 			     	url: '/index/update-file/',
-			     	data: 'file='+ activeTab.attr('file') +'&text='+ cssEditor.getValue(),
+			     	data: 'file='+ activeTab.attr('file') +'&text='+ escape(cssEditor.getValue()),
 			         success: function(response){
 			         }, 
 			         error: function (data) {
@@ -92,7 +96,7 @@ $(document).ready(function()
 	         	$('#' + $('.ui-tabs-active').attr('l') + '-editor').val(response);
 
 	         	//Re-create CodeMirror textarea
-	         	var cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
+	         	cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
 						lineNumbers: true, mode:  "css", theme: "solarized"
 					});
 	         }, 

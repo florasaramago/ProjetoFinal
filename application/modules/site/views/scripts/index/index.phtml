@@ -20,7 +20,7 @@
 		    		foreach($this->css as $name => $css) 
 		    			echo '<span class="sub-tab" file="'. $css[0] .'">' . $name . ' </span>';
 	    	?></div>
-	        <textarea id="css-editor" class="css-editor"><?php if($css[1]) { foreach($css[1] as $c) echo $c; } ?></textarea>
+	        <textarea id="css-editor" class="css-editor"></textarea>
 	    </div>
 	    <div id="tabs-3">
 	    	<div class="sub-tabs"><?php
@@ -28,7 +28,7 @@
 		    		foreach($this->javascripts as $name => $js) 
 		    			echo '<span class="sub-tab" file="'. $js[0] .'">' . $name . ' </span>';
 	    	?></div>
-	        <textarea id="javascript-editor" class="javascript-editor"><?php if($js[1]) { foreach($js[1] as $j) echo $j; } ?></textarea>
+	        <textarea id="javascript-editor" class="javascript-editor"></textarea>
 	    </div>	
 	</div>
 	
