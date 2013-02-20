@@ -23,38 +23,6 @@ $(document).ready(function()
 			$('#tabs-2').children('.sub-tabs').children('span:first').addClass('active-tab');
 			$('#tabs-2').children('.sub-tabs').children('span:first').trigger('click');
 		}
-
-		//Create CodeMirror textarea for JavaScript
-		if(!cssEditor) {
-			cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
-				lineNumbers: true, mode: "css", theme: "solarized"
-			});
-		}
-
-		//Edit CSS code
-		$('.CodeMirror, .cm-s-solarized').on('keyup', function () { 
-			//Check if it's CSS textarea
-			if($(this).siblings('textarea').hasClass('css-editor')) {
-				//Check which sub-tab is active
-				var activeTab = $(this).siblings('.sub-tabs').children('.active-tab');
-				console.log('file='+ activeTab.attr('file') +'&text='+ cssEditor.getValue());
-				//Update the file on server
-				$.ajax({
-			     	url: '/index/update-file/',
-			     	data: 'file='+ activeTab.attr('file') +'&text='+ escape(cssEditor.getValue()),
-			         success: function(response){
-			         }, 
-			         error: function (data) {
-			         },
-			         complete: function(data) {
-			         	//Reload simulator
-			         	$('#simulation').html(htmlEditor.getValue());
-			         },
-					type: "POST", 
-					dataType: "json"
-				});
-			}
-		});
 	});
 
 	//Change to JavaScript tag
@@ -83,11 +51,11 @@ $(document).ready(function()
 		$('.active-tab').removeClass('active-tab');
 		$(this).addClass('active-tab');
 
-		//Change code inside CodeMirror textarea
+		//Change code inside CodeMirror textarea according to selected sub-tab
 		$.ajax({
 	     	url: '/index/change-sub-tab/',
 	     	data: 'file='+ $('.active-tab').attr('file'),
-	         success: function(response){
+	         success: function(response) {
 	         	//Remove other CodeMirror textareas
 	         	$('#css-editor').siblings('.CodeMirror').remove();
 	         	$('#javascript-editor').siblings('.CodeMirror').remove();
@@ -99,12 +67,38 @@ $(document).ready(function()
 	         	cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
 						lineNumbers: true, mode:  "css", theme: "solarized"
 					});
+
+	         	//Load CSS code into CodeMirror textarea
+					cssEditor.setValue(response);
+
+					//Edit CSS code
+					cssEditor.on("change", function() {
+						//Check if it's CSS textarea
+						if($('.CodeMirror, .cm-s-solarized').siblings('textarea').hasClass('css-editor')) {
+							//Check which sub-tab is active
+							var activeTab = $('.CodeMirror, .cm-s-solarized').siblings('.sub-tabs').children('.active-tab');
+							//Update the file on server
+							$.ajax({
+						     	url: '/index/update-file/',
+						     	data: 'file='+ activeTab.attr('file') +'&text='+ escape(cssEditor.getValue()),
+						         success: function(response){
+						         }, 
+						         error: function (data) {
+						         	console.log(data.responseText);
+						         },
+						         complete: function(data) {
+						         	//Reload simulator
+						         	$('#simulation').html(htmlEditor.getValue());
+						         },
+								type: "POST", 
+								dataType: "json"
+							});
+						}
+					});
 	         }, 
 	         error: function (data) {
-	         	console.log('omg');
 	         },
 	         complete: function(data) {
-	         	$('#simulation').html($('#html-editor').val());
 	         },
 			type: "POST", 
 			dataType: "json"
