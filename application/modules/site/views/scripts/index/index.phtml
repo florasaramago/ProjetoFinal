@@ -12,7 +12,22 @@
 	        <li l="javascript"><a href="#tabs-3">JavaScript</a></li>
 	    </ul>
 	    <div id="tabs-1">
-	        <textarea id="html-editor"><?php echo $this->contents; ?></textarea>
+	    	<?php if($this->contents): ?>
+	    		<textarea id="html-editor"><?php echo $this->contents; ?></textarea>
+	    	<?php else: ?>
+	    		<textarea id="html-editor">
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="http://projetofinal.dev/temp/529d9a1cc503a3db534884f5d6a2a2f3/user/default.css" />
+  </head>
+  <body>
+
+  </body>
+  <script type="text/javaScript" src="http://projetofinal.dev/temp/529d9a1cc503a3db534884f5d6a2a2f3/user/default.js"></script>
+</html></textarea>
+	 		<?php endif; ?>
+	        
 	    </div>
 	    <div id="tabs-2">
 	    	<div class="sub-tabs">
