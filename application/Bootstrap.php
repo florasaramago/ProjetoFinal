@@ -6,14 +6,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
 	protected $_pluginResources = array(
-        'modules' => array()
+		'modules' => array()
 	);
 
 	protected function _initAutoload( )
 	{
 		$moduleLoader = new Zend_Application_Module_Autoloader( array (
-                'namespace' => '', 
-                'basePath' => APPLICATION_PATH 
+				'namespace' => '', 
+				'basePath' => APPLICATION_PATH 
 		) );
 		return $moduleLoader;
 	}
@@ -52,57 +52,36 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	
 	protected function _initSession( )
 	{
-		// try {
-			// $router = $this->frontController->getRouter();
-			// $request =  new Zend_Controller_Request_Http();
-			// $router->route($request);
-			
-			// if($request->getModuleName() != 'site' || $request->getControllerName() == 'auth') {
-			// 	// Config Zend_Session
-			// 	$config = Zend_Registry::get('config')->toArray();
-			// 	//Zend_Session::setOptions($config);
-			// 	Zend_Session::setOptions( array (
-		 //        		'name'                => $config['name'],  // Own name
-		 //        		'cookie_httponly'     => true,             // XSS hardening
-		 //                'gc_probability'      => $config['gc_probability'], 
-		 //                'gc_divisor'          => $config['gc_divisor'], 
-		 //        		'gc_maxlifetime'      => $config['gc_maxlifetime'],
-		 //                'remember_me_seconds' => $config['remember_me_seconds'],
-			// 	) );				
-				
-				
-			// 	// Create your Zend_Session_SaveHandler_DbTable
-			// 	$configHandler = array(
-			// 	    'name'           => 'session',
-			// 	    'primary'        => 'id',
-			// 	    'modifiedColumn' => 'modified',
-			// 	    'dataColumn'     => 'data',
-			// 	    'lifetimeColumn' => 'lifetime',
-			// 		'useridColumn'	 => 'user_id'
-			// 	);
-				
-			// 	$saveHandler = new My_Session_SaveHandler_DbTable($configHandler);
-			// 	$saveHandler->setLifetime( $config['gc_maxlifetime'] );
-				
-			// 	// Set the save handler for Zend_Session
-			// 	Zend_Session::setSaveHandler($saveHandler);
-			
-				// Start Session
-				Zend_Session::start();
-		// 	}
-		// } catch (Exception $e) {
-		// 	if(APPLICATION_ENV == 'development') {
-		// 		echo $e->getMessage();
-		// 	}
-		// }
+		Zend_Session::start();
+
+		$sessionPath = TEMP_PATH . '/' . Zend_Session::getId();
+
+		if(!is_dir($sessionPath)) {
+			if(mkdir($sessionPath, 0777)) {
+				$userPath = $sessionPath . '/user';
+
+				if(!is_dir($userPath)) {
+					if(mkdir($userPath, 0777)) {
+						$cssHandle = fopen($userPath . '/default.css', "w");
+						$jsHandle = fopen($userPath . '/default.js', "w");
+
+						$ns = new Zend_Session_Namespace('defaultFiles');
+						$ns->cssHandle = $cssHandle;
+						$ns->jsHandle = $jsHandle;
+					}
+				}
+			}
+
+
+		}
 	}
 
 	protected function _initLayout( )
 	{
 		Zend_Layout::startMvc( array (
-                'layout'     => 'layout',
-        		'contentKey' => 'content' 
-        		) );
+				'layout'     => 'layout',
+				'contentKey' => 'content' 
+				) );
 	}
 
 	/**
@@ -124,22 +103,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 		foreach ( $modules as $name => $path ) {
 			$autoloader = new Zend_Application_Module_Autoloader( array (
-                    'namespace' => ucfirst( $name ) . '_', 
-                    'basePath' => APPLICATION_PATH . DS . 'modules' . DS . $name 
+					'namespace' => ucfirst( $name ) . '_', 
+					'basePath' => APPLICATION_PATH . DS . 'modules' . DS . $name 
 			) );
 		}
 	}
 	
 	protected function _bootstrap($resource = null)
-    {
-        try {
-            parent::_bootstrap($resource);
-        } catch (Exception $e) {
-            parent::_bootstrap('frontController');
-            $front = $this->getResource('frontController');
-            //$front->registerPlugin(new Zend_Controller_Plugin_BootstrapError($e));
-        }
-    }
+	{
+		try {
+			parent::_bootstrap($resource);
+		} catch (Exception $e) {
+			parent::_bootstrap('frontController');
+			$front = $this->getResource('frontController');
+			//$front->registerPlugin(new Zend_Controller_Plugin_BootstrapError($e));
+		}
+	}
 }
 
 ?>

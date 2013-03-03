@@ -15,19 +15,31 @@
 	        <textarea id="html-editor"><?php echo $this->contents; ?></textarea>
 	    </div>
 	    <div id="tabs-2">
-	    	<div class="sub-tabs"><?php
-	    		if($this->css)
-		    		foreach($this->css as $name => $css) 
-		    			echo '<span class="sub-tab" file="'. $css[0] .'">' . $name . ' </span>';
-	    	?></div>
+	    	<div class="sub-tabs">
+	    		<?php if($this->post == 1): ?>
+	    			<?php if($this->css): ?>
+		    			<?php foreach($this->css as $name => $css): ?>
+			    			<span class="sub-tab" file="<?php echo $css[0]; ?>"><?php echo $name; ?></span>
+			    		<?php endforeach; ?>
+		    		<?php endif; ?>
+	    		<?php else: ?>
+		    		<span class="sub-tab" file="<?php echo $this->defaultCSS; ?>">default.css</span>
+		    	<?php endif; ?>
+		   </div>
 	        <textarea id="css-editor" class="css-editor"></textarea>
 	    </div>
 	    <div id="tabs-3">
-	    	<div class="sub-tabs"><?php
-	    		if($this->javascripts)
-		    		foreach($this->javascripts as $name => $js) 
-		    			echo '<span class="sub-tab" file="'. $js[0] .'">' . $name . ' </span>';
-	    	?></div>
+	    	<div class="sub-tabs">
+	    		<?php if($this->post == 1): ?>
+	    			<?php if($this->javascripts): ?>
+		    			<?php foreach($this->javascripts as $name => $js): ?>
+			    			<span class="sub-tab" file="<?php echo $js[0]; ?>"><?php echo $name; ?></span>
+			    		<?php endforeach; ?>
+		    		<?php endif; ?>
+	    		<?php else: ?>
+		    		<span class="sub-tab" file="<?php echo $this->defaultJS; ?>">default.js</span>
+		    	<?php endif; ?>
+		   </div>
 	        <textarea id="javascript-editor" class="javascript-editor"></textarea>
 	    </div>	
 	</div>

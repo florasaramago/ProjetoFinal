@@ -40,8 +40,13 @@ class IndexController extends Core_Controller
 				$this->view->javascripts = $javascripts['data'];
 				$this->view->css = $css['data'];
 				$this->view->contents = $contents;
+				$this->view->post = 1;
 			}
-		}	
+		} else {
+			$this->view->defaultCSS = '/temp/' . Zend_Session::getId() . '/user/default.css';
+			$this->view->defaultJS = '/temp/' . Zend_Session::getId() . '/user/default.js';
+			$this->view->post = 0;
+		}
 	}
 
 	public function updateFileAction ()
@@ -80,5 +85,4 @@ class IndexController extends Core_Controller
 			exit;
 		}
 	}
-	
 }
