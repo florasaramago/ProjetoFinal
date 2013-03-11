@@ -7,15 +7,16 @@
 			<input type="submit" value="Ir"/>
 		</form>
 		<ul id="lang-menu">
-	        <li l="html"><a href="#tabs-1">HTML</a></li>
-	        <li l="css"><a href="#tabs-2">CSS</a></li>
-	        <li l="javascript"><a href="#tabs-3">JavaScript</a></li>
-	    </ul>
-	    <div id="tabs-1">
-	    	<?php if($this->contents): ?>
-	    		<textarea id="html-editor"><?php echo $this->contents; ?></textarea>
-	    	<?php else: ?>
-	    		<textarea id="html-editor">
+	   	<li l="html"><a href="#tabs-1">HTML</a></li>
+	   	<li l="css"><a href="#tabs-2">CSS</a></li>
+	   	<li l="javascript"><a href="#tabs-3">JavaScript</a></li>
+	   </ul>
+	   <div id="inner-editor">
+			<div id="tabs-1">
+		   	<?php if($this->contents): ?>
+		   		<textarea id="html-editor"><?php echo $this->contents; ?></textarea>
+		   	<?php else: ?>
+		   		<textarea id="html-editor">
 <!DOCTYPE html>
 <html>
   <head>
@@ -26,37 +27,48 @@
   </body>
   <script type="text/javaScript" src="http://projetofinal.dev/temp/529d9a1cc503a3db534884f5d6a2a2f3/user/default.js"></script>
 </html></textarea>
-	 		<?php endif; ?>
-	        
-	    </div>
-	    <div id="tabs-2">
-	    	<div class="sub-tabs">
-	    		<?php if($this->post == 1): ?>
-	    			<?php if($this->css): ?>
-		    			<?php foreach($this->css as $name => $css): ?>
-			    			<span class="sub-tab" file="<?php echo $css[0]; ?>"><?php echo $name; ?></span>
-			    		<?php endforeach; ?>
-		    		<?php endif; ?>
-	    		<?php else: ?>
-		    		<span class="sub-tab" file="<?php echo $this->defaultCSS; ?>">default.css</span>
-		    	<?php endif; ?>
+		 		<?php endif; ?>
+		        
 		   </div>
-	        <textarea id="css-editor" class="css-editor"></textarea>
-	    </div>
-	    <div id="tabs-3">
-	    	<div class="sub-tabs">
-	    		<?php if($this->post == 1): ?>
-	    			<?php if($this->javascripts): ?>
-		    			<?php foreach($this->javascripts as $name => $js): ?>
-			    			<span class="sub-tab" file="<?php echo $js[0]; ?>"><?php echo $name; ?></span>
-			    		<?php endforeach; ?>
-		    		<?php endif; ?>
-	    		<?php else: ?>
-		    		<span class="sub-tab" file="<?php echo $this->defaultJS; ?>">default.js</span>
-		    	<?php endif; ?>
+		   <div id="tabs-2">
+		    	<div class="sub-tabs">
+		    		<?php if($this->post == 1): ?>
+		    			<?php if($this->css): ?>
+			    			<?php foreach($this->css as $name => $css): ?>
+				    			<span class="sub-tab" file="<?php echo $css[0]; ?>"><?php echo $name; ?></span>
+				    		<?php endforeach; ?>
+			    		<?php endif; ?>
+		    		<?php else: ?>
+			    		<span class="sub-tab" file="<?php echo $this->defaultCSS; ?>">default.css</span>
+			    	<?php endif; ?>
+			   </div>
+		        <textarea id="css-editor" class="css-editor"></textarea>
 		   </div>
-	        <textarea id="javascript-editor" class="javascript-editor"></textarea>
-	    </div>	
+		   <div id="tabs-3">
+		    	<div class="sub-tabs">
+		    		<?php if($this->post == 1): ?>
+		    			<?php if($this->javascripts): ?>
+			    			<?php foreach($this->javascripts as $name => $js): ?>
+				    			<span class="sub-tab" file="<?php echo $js[0]; ?>"><?php echo $name; ?></span>
+				    		<?php endforeach; ?>
+			    		<?php endif; ?>
+		    		<?php else: ?>
+			    		<span class="sub-tab" file="<?php echo $this->defaultJS; ?>">default.js</span>
+			    	<?php endif; ?>
+			   </div>
+		      <textarea id="javascript-editor" class="javascript-editor"></textarea>
+		   </div>	
+		   <div id="controls">
+		   	<span>Incluir bibliotecas:</span><br>
+		   	<input type="checkbox" name="vehicle" value="Bike">jQuery
+				<input type="checkbox" name="vehicle" value="Car">jQuery UI
+				<input type="checkbox" name="vehicle" value="Car">jQuery Mobile
+				<br><br>
+				<span>Simulador:</span><br>
+				<input type="radio" name="group1" value="Milk" selected="selected"> iPhone
+				<input type="radio" name="group1" value="Milk"> Android<br>
+		   </div>
+		</div>
 	</div>
 	
 	<div id="smartphone">

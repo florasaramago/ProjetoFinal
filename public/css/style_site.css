@@ -1,3 +1,6 @@
+body {
+	background: url(https://d3dma7a8zw52bz.cloudfront.net/assets/wallpapers/paper-bb988be03cc3cfbb7ef01f88a9f80a52.jpg) #f5efe6;
+}
 input[type=text], textarea {
 	transition: all 0.30s ease-in-out;
 	-webkit-transition: all 0.30s ease-in-out;
@@ -51,7 +54,7 @@ input[type=text]:focus, textarea:focus {
 	background-color: #FFF;
 	width: 100%;
 	max-width:900px;
-	height: 685px;
+	height: 500px;
 	font-family: courier;
 	font-size: 15px;
 
@@ -220,15 +223,18 @@ input[type=text]:focus, textarea:focus {
 	background: transparent;
 }
 
-.ui-tabs .ui-tabs-panel {
+#inner-editor {
 	display: block;
 	border: 1px solid #AAA;
-	padding: 1em 1.4em;
 	background-image: url(../img/brushed_alu.png);
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	-khtml-border-radius: 4px;
 	border-radius: 4px;
+}
+
+.ui-tabs .ui-tabs-panel {
+	
 }
 
 .url-form {
@@ -241,4 +247,16 @@ input[type=text]:focus, textarea:focus {
 	font-family: Avenir;
 	font-size: 15px;
 	width:300px;
+}
+
+#controls {
+	margin-left: 20px;
+	margin-bottom: 20px;
+	max-width: 810px;
+
+	color: #666;
+	font-family: Avenir;
+	font-size: 15px;
+	font-weight: normal;
+	text-shadow: 0px 1px 0px rgba(255,255,255,.5);
 }
