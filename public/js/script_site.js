@@ -135,5 +135,37 @@ $(document).ready(function()
 	$('#resize').on('click', function() {
 		$('#smartphone').toggleClass('smaller');
 	});
+
+	$('.library-checkbox').change(function() {
+		if($(this).is(":checked")) {
+			//Usuário marcou a checkbox
+			$.ajax({
+		     	url: '/index/add-library/',
+		     	data: 'lib='+ $(this).attr('value')+'&html='+ escape(htmlEditor.getValue()),
+		         success: function(response){
+		         	console.log(response);
+		         	htmlEditor.setValue(response);
+		         }, 
+		         error: function (data) {
+		         	console.log(data.responseText);
+		         },
+		         complete: function(data) {
+		         	//Reload simulator
+		         	$('#simulation').html(htmlEditor.getValue());
+		         },
+				type: "POST", 
+				dataType: "json"
+			});
+		} else {
+			//Usuário desmarcou a checkbox
+			if($(this).attr('value') == 'jquery') {
+				alert('desmarcou jQuery');
+			} else if($(this).attr('value') == 'jquery-ui') {
+				alert('desmarcou jQuery UI');
+			} else if($(this).attr('value') == 'jquery-mobile') {
+				alert('desmarcou jQuery Mobile');
+			}
+		}
+	})
 	
 });
