@@ -34,8 +34,13 @@ class IndexController extends Core_Controller
 				$javascripts = $fileModel->createFiles($jsUrls, $url);
 				$css = $fileModel->createFiles($cssUrls, $url);
 
-				$contents = $fileModel->replaceJavascriptFiles($contents, $javascripts['sources']);
-				$contents = $fileModel->replaceCssFiles($contents, $css['sources']);
+				if(!empty($javascripts['sources'])) {
+					$contents = $fileModel->replaceJavascriptFiles($contents, $javascripts['sources']);
+				}
+				
+				if(!empty($css['sources'])) {
+					$contents = $fileModel->replaceCssFiles($contents, $css['sources']);
+				}
 
 				$contents = $fileModel->preventIframeBusting($contents);
 
