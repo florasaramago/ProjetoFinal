@@ -11,10 +11,18 @@ $(document).ready(function()
 		lineNumbers: true, mode: "text/html", theme: "solarized", tabMode: "indent"
 	});
 
+	var iframe = document.getElementById('simulation');
+	iframe.contentWindow.document.open('text/html', 'replace');
+	iframe.contentWindow.document.write(String(htmlEditor.getValue()));
+	iframe.contentWindow.document.close();
+
 	//Edit HTML code
 	$('.CodeMirror, .cm-s-solarized').on('keyup', function () { 
 		//Update simulator
-		$('#simulation').html(htmlEditor.getValue());
+		//$('#simulation').html(htmlEditor.getValue());
+		iframe.contentWindow.document.open('text/html', 'replace');
+		iframe.contentWindow.document.write(String(htmlEditor.getValue()));
+		iframe.contentWindow.document.close();
 	});
 
 	//Change to CSS tab
@@ -80,7 +88,10 @@ $(document).ready(function()
 							         },
 							         complete: function(data) {
 							         	//Reload simulator
-							         	$('#simulation').html(htmlEditor.getValue());
+							         	//$('#simulation').html(htmlEditor.getValue());
+							         	iframe.contentWindow.document.open('text/html', 'replace');
+											iframe.contentWindow.document.write(String(htmlEditor.getValue()));
+											iframe.contentWindow.document.close();
 							         },
 									type: "POST", 
 									dataType: "json"
@@ -113,7 +124,9 @@ $(document).ready(function()
 							         },
 							         complete: function(data) {
 							         	//Reload simulator
-							         	$('#simulation').html(htmlEditor.getValue());
+							         	iframe.contentWindow.document.open('text/html', 'replace');
+											iframe.contentWindow.document.write(String(htmlEditor.getValue()));
+											iframe.contentWindow.document.close();
 							         },
 									type: "POST", 
 									dataType: "json"
@@ -151,7 +164,9 @@ $(document).ready(function()
 		         },
 		         complete: function(data) {
 		         	//Reload simulator
-		         	$('#simulation').html(htmlEditor.getValue());
+		         	iframe.contentWindow.document.open('text/html', 'replace');
+						iframe.contentWindow.document.write(String(htmlEditor.getValue()));
+						iframe.contentWindow.document.close();
 		         },
 				type: "POST", 
 				dataType: "json"
