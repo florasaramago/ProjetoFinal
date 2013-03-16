@@ -37,6 +37,8 @@ class IndexController extends Core_Controller
 				$contents = $fileModel->replaceJavascriptFiles($contents, $javascripts['sources']);
 				$contents = $fileModel->replaceCssFiles($contents, $css['sources']);
 
+				$contents = $fileModel->preventIframeBusting($contents);
+
 				$this->view->javascripts = $javascripts['data'];
 				$this->view->css = $css['data'];
 				$this->view->contents = $contents;

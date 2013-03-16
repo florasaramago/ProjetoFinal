@@ -25,7 +25,11 @@ class Model_File extends Core_Model
 				$fileName = substr(strrchr($urls[$id], '/'), 1);
 				$filePath = '/temp/' . Zend_Session::getId() . '/' . $host . '/' . $fileName;
 				$handle = fopen($hostPath . '/'. $fileName, "w");
-				fwrite($handle, $curlModel->curlRequestForFiles($urls[$id]));
+				$fileContents = $curlModel->curlRequestForFiles($urls[$id]);
+				if(substr(strrchr($fileName, "."), 1) == "js") {
+					$fileContents = self::preventIframeBusting($fileContents);
+				}
+				fwrite($handle, $fileContents);
 				$data[$fileName][0] = $filePath;
 				$data[$fileName][1] = file($hostPath . '/'. $fileName);
 				$sources[$url] = $filePath;
@@ -87,5 +91,14 @@ class Model_File extends Core_Model
 			return false;
 		}
 		
+	}
+
+	public function preventIframeBusting ($code)
+	{
+		if(substr_count($code, "top.location")) {
+			return str_replace("top.location", "", $code);
+		} else {
+			return $code;
+		}
 	}
 }
