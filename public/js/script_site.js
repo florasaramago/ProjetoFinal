@@ -65,7 +65,7 @@ $(document).ready(function()
 	         	if($('.ui-tabs-active').attr('l') == "css") {
 	         		//Create CSS textarea
 	         		cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
-							lineNumbers: true, mode:  "css", theme: "solarized"
+							lineNumbers: true, lineWrapping: true, mode:  "css", theme: "solarized"
 						});
 
 						//Load CSS code into CodeMirror textarea
@@ -101,7 +101,7 @@ $(document).ready(function()
 	         	} else if ($('.ui-tabs-active').attr('l') == "javascript") {
 	         		//Create JavaScript textarea
 	         		jsEditor = CodeMirror.fromTextArea(document.getElementById('javascript-editor'), {
-							lineNumbers: true, mode:  "javascript", theme: "solarized"
+							lineNumbers: true, lineWrapping: true, mode:  "javascript", theme: "solarized"
 						});
 
 						//Load JavaScript code into CodeMirror textarea
