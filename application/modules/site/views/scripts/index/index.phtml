@@ -4,7 +4,7 @@
 		<form class="url-form" method="post" action="/index" name="openUrl">
 			<label for="url">URL:</label>
 			<input type="text" name="url" />
-			<input type="submit" value="Ir"/>
+			<input type="submit" class="gray-button" value="Ir"/>
 		</form>
 		<ul id="lang-menu">
 	   	<li l="html"><a href="#tabs-1">HTML</a></li>
@@ -59,21 +59,39 @@
 		      <textarea id="javascript-editor" class="javascript-editor"></textarea>
 		   </div>	
 		   <div id="controls">
-		   	<span>Incluir bibliotecas:</span><br>
-		   	<input type="checkbox" class="library-checkbox" id="jquery" value="jquery">jQuery
-				<input type="checkbox" class="library-checkbox" id="jquery-ui" value="jquery-ui">jQuery UI
-				<input type="checkbox" class="library-checkbox" id="jquery-mobile" value="jquery-mobile">jQuery Mobile
-				<br><br>
-				<span>Simulador:</span><br>
-				<input type="radio" name="group1" value="Milk" selected="selected"> iPhone
-				<input type="radio" name="group1" value="Milk"> Android<br>
+		   	<div id="first-controls">
+			   	<span class="control-section">Incluir bibliotecas:</span><br>
+			   	<input type="checkbox" class="library-checkbox control-option" id="jquery" value="jquery">jQuery
+					<input type="checkbox" class="library-checkbox control-option" id="jquery-ui" value="jquery-ui">jQuery UI
+					<input type="checkbox" class="library-checkbox control-option" id="jquery-mobile" value="jquery-mobile">jQuery Mobile
+					<br><br>
+					<span class="control-section">Simulador:</span><br>
+					<input type="radio" class="control-option" name="sim-type" value="ios" checked="checked"> iOS
+					<br>
+					<input type="radio" class="control-option" name="sim-type" value="android"> Android
+					<br><br>
+				</div>
+				<div id="second-controls">
+					<button class="gray-button big-button">Limpar editor</button><br><br>
+					<span class="control-section">Tamanho do simulador:</span><br>
+					<input type="radio" class="resize control-option" value="big" name="sim-size" checked="checked"> Grande<br>
+					<input type="radio" class="resize control-option" value="small" name="sim-size"> Pequeno<br>
+				</div>
+				<div id="third-controls">
+					<span class="control-section">Exportar arquivos:</span><br>
+					<input type="checkbox" class="library-checkbox control-option" id="jquery" value="jquery">HTML
+					<br>
+					<input type="checkbox" class="library-checkbox control-option" id="jquery-ui" value="jquery-ui">CSS <br>
+					<input type="checkbox" class="library-checkbox control-option" id="jquery-mobile" value="jquery-mobile">JavaScript
+					<br>
+					<input type="submit" class="gray-button small-button export" value="Exportar"/>
+				</div>
 		   </div>
 		</div>
 	</div>
 	
 	<div id="smartphone">
 		<iframe id="simulation" src="about:blank"></iframe>
-		<span id="resize">Resize</span>
 	</div>
 	<div class="clear"></div>
 </div>
