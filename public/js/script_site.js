@@ -156,7 +156,6 @@ $(document).ready(function()
 		     	url: '/index/add-library/',
 		     	data: 'lib='+ $(this).attr('value')+'&html='+ escape(htmlEditor.getValue()),
 		         success: function(response){
-		         	console.log(response);
 		         	htmlEditor.setValue(response);
 		         }, 
 		         error: function (data) {
@@ -173,13 +172,24 @@ $(document).ready(function()
 			});
 		} else {
 			//Usuário desmarcou a checkbox
-			if($(this).attr('value') == 'jquery') {
-				alert('desmarcou jQuery');
-			} else if($(this).attr('value') == 'jquery-ui') {
-				alert('desmarcou jQuery UI');
-			} else if($(this).attr('value') == 'jquery-mobile') {
-				alert('desmarcou jQuery Mobile');
-			}
+			$.ajax({
+		     	url: '/index/remove-library/',
+		     	data: 'lib='+ $(this).attr('value')+'&html='+ escape(htmlEditor.getValue()),
+		         success: function(response){
+		         	htmlEditor.setValue(response);
+		         }, 
+		         error: function (data) {
+		         	console.log(data.responseText);
+		         },
+		         complete: function(data) {
+		         	//Reload simulator
+		         	iframe.contentWindow.document.open('text/html', 'replace');
+						iframe.contentWindow.document.write(String(htmlEditor.getValue()));
+						iframe.contentWindow.document.close();
+		         },
+				type: "POST", 
+				dataType: "json"
+			});
 		}
 	})
 	

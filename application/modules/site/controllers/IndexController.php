@@ -105,12 +105,34 @@ class IndexController extends Core_Controller
 				$e = $htmlDOM->find("body", 0);
 
 				if($lib == 'jquery') {
-					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/jquery-1.9.1.js\"></script>";
+					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/jquery-1.9.1.js\" id=\"jquery\"></script>";
 				} else if($lib == 'jquery-ui') {
-					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/ui/1.10.1/jquery-ui.js\"></script>";
+					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/ui/1.10.1/jquery-ui.js\" id=\"jquery-ui\"></script>";
 				} else if($lib == 'jquery-mobile') {
-					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js\"></script>";
+					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js\" id=\"jquery-mobile\"></script>";
 				}
+
+				$this->_helper->json->sendJson($htmlDOM->outertext);
+			} else {
+				exit;
+			}
+		} else {
+			exit;
+		}
+	}
+
+	public function removeLibraryAction ()
+	{
+		if ($this->_request->isXmlHttpRequest()) {
+			if($this->_request->isPost()) {
+				$lib = $this->_request->getPost('lib');
+				$html = $this->_request->getPost('html');
+
+				$htmlDOM = new simple_html_dom();
+				$htmlDOM->load($html, true, false);
+
+				$e = $htmlDOM->find("script[id=$lib]", 0);
+				$e->outertext = '';
 
 				$this->_helper->json->sendJson($htmlDOM->outertext);
 			} else {
