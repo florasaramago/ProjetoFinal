@@ -54,25 +54,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	{
 		Zend_Session::start();
 
-		$sessionPath = TEMP_PATH . '/' . Zend_Session::getId();
+		if(!Zend_Registry::isRegistered('session')) {
+			$sessionPath = TEMP_PATH . '/' . Zend_Session::getId();
 
-		if(!is_dir($sessionPath)) {
-			if(mkdir($sessionPath, 0777)) {
-				$userPath = $sessionPath . '/user';
+			if(!is_dir($sessionPath)) {
+				if(mkdir($sessionPath, 0777)) {
+					$userPath = $sessionPath . '/user';
 
-				if(!is_dir($userPath)) {
-					if(mkdir($userPath, 0777)) {
-						$cssHandle = fopen($userPath . '/default.css', "w");
-						$jsHandle = fopen($userPath . '/default.js', "w");
+					if(!is_dir($userPath)) {
+						if(mkdir($userPath, 0777)) {
+							$cssHandle = fopen($userPath . '/default.css', "w");
+							$jsHandle = fopen($userPath . '/default.js', "w");
 
-						$ns = new Zend_Session_Namespace('defaultFiles');
-						$ns->cssHandle = $cssHandle;
-						$ns->jsHandle = $jsHandle;
+							$ns = new Zend_Session_Namespace('defaultFiles');
+							$ns->cssHandle = $cssHandle;
+							$ns->jsHandle = $jsHandle;
+						}
 					}
 				}
 			}
-
-
 		}
 	}
 
