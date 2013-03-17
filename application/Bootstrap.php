@@ -67,6 +67,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 							$jsHandle = fopen($userPath . '/default.js', "w");
 
 							$ns = new Zend_Session_Namespace('defaultFiles');
+							Zend_Registry::set('session', $ns);
 							$ns->cssHandle = $cssHandle;
 							$ns->jsHandle = $jsHandle;
 						}
