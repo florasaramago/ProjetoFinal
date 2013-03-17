@@ -144,11 +144,6 @@ $(document).ready(function()
 		});
 	});
 
-	//Resize simulator
-	$('#resize').on('click', function() {
-		$('#smartphone').toggleClass('smaller');
-	});
-
 	$('.library-checkbox').change(function() {
 		if($(this).is(":checked")) {
 			//Usuário marcou a checkbox
@@ -191,6 +186,18 @@ $(document).ready(function()
 				dataType: "json"
 			});
 		}
-	})
+	});
+
+	//Resize simulator
+	$('.resize').change(function() {
+		if($(this).is(":checked")) {
+			if($(this).attr('value') == "small") {
+				$('#smartphone').addClass('smaller');
+			} else {
+				$('#smartphone').removeClass('smaller');
+			}	
+		}
+		//$('#smartphone').toggleClass('smaller');
+	});
 	
 });
