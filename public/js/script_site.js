@@ -8,7 +8,7 @@ $(document).ready(function()
 
 	//Create CodeMirror textarea for HTML
 	var htmlEditor = CodeMirror.fromTextArea(document.getElementById('html-editor'), {
-		lineNumbers: true, mode: "text/html", theme: "solarized", tabMode: "indent"
+		lineNumbers: true, lineWrapping: true, mode: "text/html", theme: "solarized", tabMode: "indent"
 	});
 
 	var iframe = document.getElementById('simulation');
