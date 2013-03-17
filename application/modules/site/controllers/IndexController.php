@@ -5,7 +5,7 @@ class IndexController extends Core_Controller
 	{
 		$curlModel = new Model_Curl();
 		$fileModel = new Model_File();
-		
+
 		if($this->_request->isPost()) {
 			$url = $this->_request->getPost('url');
 			$url = $curlModel->correctUrl($url);
@@ -99,15 +99,17 @@ class IndexController extends Core_Controller
 				$lib = $this->_request->getPost('lib');
 				$html = $this->_request->getPost('html');
 
-				$htmlDOM = str_get_html ($html);
+				$htmlDOM = new simple_html_dom();
+				$htmlDOM->load($html, true, false);
+
 				$e = $htmlDOM->find("body", 0);
 
 				if($lib == 'jquery') {
-					$e->outertext = $e->outertext . '<script type="text/javaScript" src="http://code.jquery.com/jquery-1.9.1.js"></script>';
+					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/jquery-1.9.1.js\"></script>";
 				} else if($lib == 'jquery-ui') {
-					$e->outertext = $e->outertext . '<script type="text/javaScript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>';
+					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/ui/1.10.1/jquery-ui.js\"></script>";
 				} else if($lib == 'jquery-mobile') {
-					$e->outertext = $e->outertext . '<script type="text/javaScript" src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>';
+					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js\"></script>";
 				}
 
 				$this->_helper->json->sendJson($htmlDOM->outertext);
