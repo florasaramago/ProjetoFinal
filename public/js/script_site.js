@@ -199,5 +199,19 @@ $(document).ready(function()
 		}
 		//$('#smartphone').toggleClass('smaller');
 	});
+
+	$('#clear-editor').on('click', function() {
+		$('#confirm-clear').dialog({ dialogClass: 'no-close'}); 
+		$('#clear-editor :button').blur();
+
+		$('.no').on('click', function() {
+			//$('#clear-editor').dialog('close');
+			$(this).parents(".ui-dialog-content").dialog('close');
+		});
+
+		$('.yes').on('click', function() {
+			location.reload();
+		});
+	});
 	
 });

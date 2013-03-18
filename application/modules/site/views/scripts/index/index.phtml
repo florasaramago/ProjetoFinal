@@ -72,7 +72,7 @@
 					<br><br>
 				</div>
 				<div id="second-controls">
-					<button class="gray-button big-button">Limpar editor</button><br><br>
+					<button id="clear-editor" class="gray-button big-button">Limpar editor</button><br><br>
 					<span class="control-section">Tamanho do simulador:</span><br>
 					<input type="radio" class="resize control-option" value="big" name="sim-size" checked="checked"> Grande<br>
 					<input type="radio" class="resize control-option" value="small" name="sim-size"> Pequeno<br>
@@ -94,4 +94,10 @@
 		<iframe id="simulation" src="about:blank"></iframe>
 	</div>
 	<div class="clear"></div>
+	<div id="confirm-clear" title="Atenção" style="display: none;">
+		Ao confirmar esta ação, todas as alterações no código atual serão perdidas. Tem certeza de que deseja continuar?
+		<br>
+		<button id="clear-editor" class="gray-button small-button confirm-button yes">Sim</button>
+		<button id="clear-editor" class="gray-button small-button confirm-button no">Não</button>
+	</div>
 </div>

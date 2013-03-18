@@ -334,3 +334,42 @@ input[type=text]:focus, textarea:focus {
 	-text-stroke-width: 1px;
 	font-size: 16px;
 }
+
+#confirm-clear {
+
+}
+
+.ui-dialog {
+	border: 1px solid #AAA;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, rgb(223, 223, 223)), color-stop(1, #f5f5f5) );
+	background:-moz-linear-gradient( center top, #dfdfdf 5%, #f5f5f5 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#f5f5f5');
+	background-color:#dfdfdf;
+	font-family: Avenir;
+	font-weight: normal;
+	font-size: 15px;
+	/*background: url(../img/brushed_alu.png);*/
+}
+
+.ui-dialog-title {
+	font-family: Avenir;
+	font-weight: normal;
+	color: rgb(184, 60, 60);
+	-webkit-text-stroke-width: 1px;
+	-moz-text-stroke-width: 1px;
+	-text-stroke-width: 1px;
+	font-size: 16px;
+}
+
+.no-close .ui-dialog-titlebar-close { display: none }
+
+.confirm-button {
+	outline: none;
+	margin-left: 52px;
+	margin-top: 10px;
+}
+
+.yes { color: rgb(50, 184, 50); }
+
+.no { color: rgb(184, 60, 60); }
+
