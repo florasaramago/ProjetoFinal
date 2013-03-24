@@ -197,7 +197,6 @@ $(document).ready(function()
 				$('#smartphone').removeClass('smaller');
 			}	
 		}
-		//$('#smartphone').toggleClass('smaller');
 	});
 
 	$('#clear-editor').on('click', function() {
@@ -205,7 +204,6 @@ $(document).ready(function()
 		$('#clear-editor :button').blur();
 
 		$('.no').on('click', function() {
-			//$('#clear-editor').dialog('close');
 			$(this).parents(".ui-dialog-content").dialog('close');
 		});
 
