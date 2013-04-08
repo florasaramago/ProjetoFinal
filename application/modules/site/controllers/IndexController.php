@@ -44,15 +44,33 @@ class IndexController extends Core_Controller
 
 				$contents = $fileModel->preventIframeBusting($contents);
 
+				_d($css['data']);
 				$this->view->javascripts = $javascripts['data'];
 				$this->view->css = $css['data'];
 				$this->view->contents = $contents;
 				$this->view->post = 1;
 			}
 		} else {
-			$this->view->defaultCSS = '/temp/' . Zend_Session::getId() . '/user/default.css';
-			$this->view->defaultJS = '/temp/' . Zend_Session::getId() . '/user/default.js';
+			// $ns = new Zend_Session_Namespace('session');
+
+			// $this->view->defaultCSS = '/temp/' . $ns->key . '/user/default.css';
+			// $this->view->defaultJS = '/temp/' . $ns->key . '/user/default.js';
 			$this->view->post = 0;
+		}
+	}
+
+	public function sessionKeyAction ()
+	{
+		if ($this->_request->isXmlHttpRequest()) {
+			if($this->_request->isPost()) {
+				$ns = new Zend_Session_Namespace('session');
+
+				$this->_helper->json->sendJson($ns->key);
+			} else {
+				exit;
+			}
+		} else {
+			exit;
 		}
 	}
 

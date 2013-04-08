@@ -8,8 +8,12 @@ class Model_File extends Core_Model
 			$data = array();
 			$sources = array();
 
+			$ns = new Zend_Session_Namespace('session');
+			$key = $ns->key;
+
 			$host = self::getHostFromUrl($hostUrl);
-			$sessionPath = TEMP_PATH . '/' . Zend_Session::getId();
+			
+			$sessionPath = TEMP_PATH . '/' . $key;
 
 			if(!is_dir($sessionPath)) {
 				mkdir($sessionPath, 0777);
@@ -23,7 +27,7 @@ class Model_File extends Core_Model
 
 			foreach($urls as $id => $url) {
 				$fileName = substr(strrchr($urls[$id], '/'), 1);
-				$filePath = '/temp/' . Zend_Session::getId() . '/' . $host . '/' . $fileName;
+				$filePath = '/temp/' . $key . '/' . $host . '/' . $fileName;
 				$handle = fopen($hostPath . '/'. $fileName, "w");
 				$fileContents = $curlModel->curlRequestForFiles($urls[$id]);
 				if(substr(strrchr($fileName, "."), 1) == "js") {

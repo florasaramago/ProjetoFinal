@@ -2,6 +2,8 @@ $(document).ready(function()
 {
 	var cssEditor;
 	var jsEditor;
+	var key;
+	var iframe = document.getElementById('simulation');
 
 	//Create tabs
 	$('#code-editor').tabs();
@@ -11,181 +13,208 @@ $(document).ready(function()
 		lineNumbers: true, lineWrapping: true, mode: "text/html", theme: "solarized", tabMode: "indent"
 	});
 
-	var iframe = document.getElementById('simulation');
-	iframe.contentWindow.document.open('text/html', 'replace');
-	iframe.contentWindow.document.write(String(htmlEditor.getValue()));
-	iframe.contentWindow.document.close();
+	$.ajax({
+		url: '/index/session-key/',
+			success: function(response){
+				key = String(response);
 
-	//Edit HTML code
-	$('.CodeMirror, .cm-s-solarized').on('keyup', function () { 
-		//Update simulator
-		//$('#simulation').html(htmlEditor.getValue());
-		iframe.contentWindow.document.open('text/html', 'replace');
-		iframe.contentWindow.document.write(String(htmlEditor.getValue()));
-		iframe.contentWindow.document.close();
-	});
+				function updateSimulator() {
+					var htmlCode = String(htmlEditor.getValue()
+									.replace("/temp/user/default.css", "/temp/"+key+"/user/default.css")
+									.replace("/temp/user/default.js", "/temp/"+key+"/user/default.js"));
+					iframe.contentWindow.document.open('text/html', 'replace');
+					iframe.contentWindow.document.write(htmlCode);
+					iframe.contentWindow.document.close();
+				}
 
-	//Change to CSS tab
-	$('#ui-id-2').on('click', function() {
-		//Set first sub-tab as active
-		if(!$('#tabs-2').children('.sub-tabs').children('.sub-tab').hasClass('active-tab')) {
-			$('#tabs-2').children('.sub-tabs').children('span:first').addClass('active-tab');
-			$('#tabs-2').children('.sub-tabs').children('span:first').trigger('click');
-		}
-	});
+				updateSimulator();
 
-	//Change to JavaScript tab
-	$('#ui-id-3').on('click', function() {
-		//Set first sub-tab as active
-		if(!$('#tabs-3').children('.sub-tabs').children('.sub-tab').hasClass('active-tab')) {
-			$('#tabs-3').children('.sub-tabs').children('span:first').addClass('active-tab');
-			$('#tabs-3').children('.sub-tabs').children('span:first').trigger('click');
-		}
-	});
+				//Edit HTML code
+				$('.CodeMirror, .cm-s-solarized').on('keyup', function () { 
+					//Update simulator
+					updateSimulator();
+				});
 
-	//Change sub-tab
-	$('.sub-tab').on('click', function() {
-		//Update active sub-tab
-		$('.active-tab').removeClass('active-tab');
-		$(this).addClass('active-tab');
+				//Change to CSS tab
+				$('#ui-id-2').on('click', function() {
+					//Set first sub-tab as active
+					if(!$('#tabs-2').children('.sub-tabs').children('.sub-tab').hasClass('active-tab')) {
+						$('#tabs-2').children('.sub-tabs').children('span:first').addClass('active-tab');
+						$('#tabs-2').children('.sub-tabs').children('span:first').trigger('click');
+					}
+				});
 
-		//Change code inside CodeMirror textarea according to selected sub-tab
-		$.ajax({
-	     	url: '/index/change-sub-tab/',
-	     	data: 'file='+ $('.active-tab').attr('file'),
-	         success: function(response) {
-	         	//Remove other CodeMirror textareas
-	         	$('#css-editor').siblings('.CodeMirror').remove();
-	         	$('#javascript-editor').siblings('.CodeMirror').remove();
+				//Change to JavaScript tab
+				$('#ui-id-3').on('click', function() {
+					//Set first sub-tab as active
+					if(!$('#tabs-3').children('.sub-tabs').children('.sub-tab').hasClass('active-tab')) {
+						$('#tabs-3').children('.sub-tabs').children('span:first').addClass('active-tab');
+						$('#tabs-3').children('.sub-tabs').children('span:first').trigger('click');
+					}
+				});
 
-	         	//Load received code into correct textarea
-	         	$('#' + $('.ui-tabs-active').attr('l') + '-editor').val(response);
+				//Change sub-tab
+				$('.sub-tab').on('click', function() {
+					//Update active sub-tab
+					$('.active-tab').removeClass('active-tab');
+					$(this).addClass('active-tab');
+					var fileName = $('.active-tab').attr('file')
+																.replace("/temp/user/default.css", "/temp/"+key+"/user/default.css")
+																.replace("/temp/user/default.js", "/temp/"+key+"/user/default.js");
 
-	         	//Re-create CodeMirror textarea
-	         	if($('.ui-tabs-active').attr('l') == "css") {
-	         		//Create CSS textarea
-	         		cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
-							lineNumbers: true, lineWrapping: true, mode:  "css", theme: "solarized"
+					//Change code inside CodeMirror textarea according to selected sub-tab
+					$.ajax({
+						url: '/index/change-sub-tab/',
+						data: 'file='+ fileName,
+							success: function(response) {
+								//Remove other CodeMirror textareas
+								$('#css-editor').siblings('.CodeMirror').remove();
+								$('#javascript-editor').siblings('.CodeMirror').remove();
+
+								//Load received code into correct textarea
+								$('#' + $('.ui-tabs-active').attr('l') + '-editor').val(response);
+
+								//Re-create CodeMirror textarea
+								if($('.ui-tabs-active').attr('l') == "css") {
+									//Create CSS textarea
+									cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
+										lineNumbers: true, lineWrapping: true, mode:  "css", theme: "solarized"
+									});
+
+									//Load CSS code into CodeMirror textarea
+									cssEditor.setValue(response);
+
+									//Edit CSS code
+									cssEditor.on("change", function() {
+										//Check if it's CSS textarea
+										if($('.CodeMirror, .cm-s-solarized').siblings('textarea').hasClass('css-editor')) {
+											//Check which sub-tab is active
+											var activeTab = $('.CodeMirror, .cm-s-solarized').siblings('.sub-tabs').children('.active-tab');
+											var fileName = activeTab.attr('file').replace("/temp/user/default.css", "/temp/"+key+"/user/default.css");
+											//Update the file on server
+											$.ajax({
+												url: '/index/update-file/',
+												data: 'file='+ fileName +'&text='+ escape(cssEditor.getValue()),
+													success: function(response){
+													}, 
+													error: function (data) {
+														console.log(data.responseText);
+													},
+													complete: function(data) {
+														//Reload simulator
+														updateSimulator();
+													},
+												type: "POST", 
+												dataType: "json"
+											});
+										}
+									});
+								} else if ($('.ui-tabs-active').attr('l') == "javascript") {
+									//Create JavaScript textarea
+									jsEditor = CodeMirror.fromTextArea(document.getElementById('javascript-editor'), {
+										lineNumbers: true, lineWrapping: true, mode:  "javascript", theme: "solarized"
+									});
+
+									//Load JavaScript code into CodeMirror textarea
+									jsEditor.setValue(response);
+
+									//Edit JavaScript code
+									jsEditor.on("change", function() {
+										//Check if it's JavaScript textarea
+										if($('.CodeMirror, .cm-s-solarized').siblings('textarea').hasClass('javascript-editor')) {
+											//Check which sub-tab is active
+											var activeTab = $('.CodeMirror, .cm-s-solarized').siblings('.sub-tabs').children('.active-tab');
+											var fileName = activeTab.attr('file').replace("/temp/user/default.js", "/temp/"+key+"/user/default.js");
+
+											//Update the file on server
+											$.ajax({
+												url: '/index/update-file/',
+												data: 'file='+ fileName +'&text='+ escape(jsEditor.getValue()),
+													success: function(response){
+													}, 
+													error: function (data) {
+														console.log(data.responseText);
+													},
+													complete: function(data) {
+														//Reload simulator
+														updateSimulator();
+													},
+												type: "POST", 
+												dataType: "json"
+											});
+										}
+									});
+								}  
+							}, 
+							error: function (data) {
+							},
+							complete: function(data) {
+							},
+						type: "POST", 
+						dataType: "json"
+					});
+				});
+
+				$('.library-checkbox').change(function() {
+					if($(this).is(":checked")) {
+						//Usuário marcou a checkbox
+						$.ajax({
+							url: '/index/add-library/',
+							data: 'lib='+ $(this).attr('value')+'&html='+ escape(htmlEditor.getValue()),
+								success: function(response){
+									htmlEditor.setValue(response);
+								}, 
+								error: function (data) {
+									console.log(data.responseText);
+								},
+								complete: function(data) {
+									//Reload simulator
+									updateSimulator();
+								},
+							type: "POST", 
+							dataType: "json"
 						});
-
-						//Load CSS code into CodeMirror textarea
-						cssEditor.setValue(response);
-
-						//Edit CSS code
-						cssEditor.on("change", function() {
-							//Check if it's CSS textarea
-							if($('.CodeMirror, .cm-s-solarized').siblings('textarea').hasClass('css-editor')) {
-								//Check which sub-tab is active
-								var activeTab = $('.CodeMirror, .cm-s-solarized').siblings('.sub-tabs').children('.active-tab');
-								//Update the file on server
-								$.ajax({
-							     	url: '/index/update-file/',
-							     	data: 'file='+ activeTab.attr('file') +'&text='+ escape(cssEditor.getValue()),
-							         success: function(response){
-							         }, 
-							         error: function (data) {
-							         	console.log(data.responseText);
-							         },
-							         complete: function(data) {
-							         	//Reload simulator
-							         	//$('#simulation').html(htmlEditor.getValue());
-							         	iframe.contentWindow.document.open('text/html', 'replace');
-											iframe.contentWindow.document.write(String(htmlEditor.getValue()));
-											iframe.contentWindow.document.close();
-							         },
-									type: "POST", 
-									dataType: "json"
-								});
-							}
+					} else {
+						//Usuário desmarcou a checkbox
+						$.ajax({
+							url: '/index/remove-library/',
+							data: 'lib='+ $(this).attr('value')+'&html='+ escape(htmlEditor.getValue()),
+								success: function(response){
+									htmlEditor.setValue(response);
+								}, 
+								error: function (data) {
+									console.log(data.responseText);
+								},
+								complete: function(data) {
+									//Reload simulator
+									updateSimulator();
+								},
+							type: "POST", 
+							dataType: "json"
 						});
-	         	} else if ($('.ui-tabs-active').attr('l') == "javascript") {
-	         		//Create JavaScript textarea
-	         		jsEditor = CodeMirror.fromTextArea(document.getElementById('javascript-editor'), {
-							lineNumbers: true, lineWrapping: true, mode:  "javascript", theme: "solarized"
-						});
+					}
+				});
 
-						//Load JavaScript code into CodeMirror textarea
-						jsEditor.setValue(response);
+				$('#clear-editor').on('click', function() {
+					$('#confirm-clear').dialog({ dialogClass: 'no-close'}); 
+					$('#clear-editor :button').blur();
 
-						//Edit JavaScript code
-						jsEditor.on("change", function() {
-							//Check if it's JavaScript textarea
-							if($('.CodeMirror, .cm-s-solarized').siblings('textarea').hasClass('javascript-editor')) {
-								//Check which sub-tab is active
-								var activeTab = $('.CodeMirror, .cm-s-solarized').siblings('.sub-tabs').children('.active-tab');
-								//Update the file on server
-								$.ajax({
-							     	url: '/index/update-file/',
-							     	data: 'file='+ activeTab.attr('file') +'&text='+ escape(jsEditor.getValue()),
-							         success: function(response){
-							         }, 
-							         error: function (data) {
-							         	console.log(data.responseText);
-							         },
-							         complete: function(data) {
-							         	//Reload simulator
-							         	iframe.contentWindow.document.open('text/html', 'replace');
-											iframe.contentWindow.document.write(String(htmlEditor.getValue()));
-											iframe.contentWindow.document.close();
-							         },
-									type: "POST", 
-									dataType: "json"
-								});
-							}
-						});
-	         	}	
-	         }, 
-	         error: function (data) {
-	         },
-	         complete: function(data) {
-	         },
-			type: "POST", 
-			dataType: "json"
-		});
-	});
+					$('.no').on('click', function() {
+						$(this).parents(".ui-dialog-content").dialog('close');
+					});
 
-	$('.library-checkbox').change(function() {
-		if($(this).is(":checked")) {
-			//Usuário marcou a checkbox
-			$.ajax({
-		     	url: '/index/add-library/',
-		     	data: 'lib='+ $(this).attr('value')+'&html='+ escape(htmlEditor.getValue()),
-		         success: function(response){
-		         	htmlEditor.setValue(response);
-		         }, 
-		         error: function (data) {
-		         	console.log(data.responseText);
-		         },
-		         complete: function(data) {
-		         	//Reload simulator
-		         	iframe.contentWindow.document.open('text/html', 'replace');
-						iframe.contentWindow.document.write(String(htmlEditor.getValue()));
-						iframe.contentWindow.document.close();
-		         },
-				type: "POST", 
-				dataType: "json"
-			});
-		} else {
-			//Usuário desmarcou a checkbox
-			$.ajax({
-		     	url: '/index/remove-library/',
-		     	data: 'lib='+ $(this).attr('value')+'&html='+ escape(htmlEditor.getValue()),
-		         success: function(response){
-		         	htmlEditor.setValue(response);
-		         }, 
-		         error: function (data) {
-		         	console.log(data.responseText);
-		         },
-		         complete: function(data) {
-		         	//Reload simulator
-		         	iframe.contentWindow.document.open('text/html', 'replace');
-						iframe.contentWindow.document.write(String(htmlEditor.getValue()));
-						iframe.contentWindow.document.close();
-		         },
-				type: "POST", 
-				dataType: "json"
-			});
-		}
+					$('.yes').on('click', function() {
+						location.reload();
+					});
+				});
+			}, 
+			error: function (data) {
+				console.log(data.responseText);
+			},
+			complete: function(data) {
+			},
+		type: "POST", 
+		dataType: "json"
 	});
 
 	//Resize simulator
@@ -195,21 +224,7 @@ $(document).ready(function()
 				$('#smartphone').addClass('smaller');
 			} else {
 				$('#smartphone').removeClass('smaller');
-			}	
+			}  
 		}
 	});
-
-	$('#clear-editor').on('click', function() {
-		$('#confirm-clear').dialog({ dialogClass: 'no-close'}); 
-		$('#clear-editor :button').blur();
-
-		$('.no').on('click', function() {
-			$(this).parents(".ui-dialog-content").dialog('close');
-		});
-
-		$('.yes').on('click', function() {
-			location.reload();
-		});
-	});
-	
 });

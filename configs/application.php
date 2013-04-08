@@ -62,6 +62,7 @@ define('APPLICATION_PATH', BASE_PATH        . DS . 'application');
 define('PATH_DATA'       , APPLICATION_PATH . DS . 'data');
 define('PATH_MODULES'    , APPLICATION_PATH . DS . 'modules');
 define('LIBRARY_PATH'    , BASE_PATH . DS . 'library');
+define('DATA_TEMP_PATH'  , PATH_DATA . DS . 'temp');
 define('ZEND_FW'		 , LIBRARY_PATH);
 
 
