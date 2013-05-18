@@ -22,6 +22,21 @@ $(document).ready(function()
 					var htmlCode = String(htmlEditor.getValue()
 									.replace("/temp/user/default.css", "/temp/"+key+"/user/default.css")
 									.replace("/temp/user/default.js", "/temp/"+key+"/user/default.js"));
+
+					$('#tabs-2').find('.sub-tab').each(function() {
+						if($(this).attr('file') != "/temp/user/default.css") {
+							htmlCode = htmlCode.replace("/"+$(this).attr('file'), "http://projetofinal.dev/temp/"+key+"/" + $(this).attr('file'));
+						}
+					});
+					
+					$('#tabs-3').find('.sub-tab').each(function() {
+						if($(this).attr('file') != "/temp/user/default.js") {
+							htmlCode = htmlCode.replace("/"+$(this).attr('file'), "http://projetofinal.dev/temp/"+key+"/" + $(this).attr('file'));
+						}
+					});		
+
+					console.log(htmlCode);
+
 					iframe.contentWindow.document.open('text/html', 'replace');
 					iframe.contentWindow.document.write(htmlCode);
 					iframe.contentWindow.document.close();
@@ -58,9 +73,13 @@ $(document).ready(function()
 					//Update active sub-tab
 					$('.active-tab').removeClass('active-tab');
 					$(this).addClass('active-tab');
-					var fileName = $('.active-tab').attr('file')
+					if($('.active-tab').attr('file').indexOf("/temp/user/default.css") != -1) {
+						var fileName = $('.active-tab').attr('file')
 																.replace("/temp/user/default.css", "/temp/"+key+"/user/default.css")
 																.replace("/temp/user/default.js", "/temp/"+key+"/user/default.js");
+					} else {
+						var fileName = "/temp/"+key+"/" + $('.active-tab').attr('file');
+					}
 
 					//Change code inside CodeMirror textarea according to selected sub-tab
 					$.ajax({
@@ -90,7 +109,13 @@ $(document).ready(function()
 										if($('.CodeMirror, .cm-s-solarized').siblings('textarea').hasClass('css-editor')) {
 											//Check which sub-tab is active
 											var activeTab = $('.CodeMirror, .cm-s-solarized').siblings('.sub-tabs').children('.active-tab');
-											var fileName = activeTab.attr('file').replace("/temp/user/default.css", "/temp/"+key+"/user/default.css");
+											
+											if(activeTab.attr('file').indexOf("/temp/user/default.css") != -1) {
+												var fileName = activeTab.attr('file').replace("/temp/user/default.css", "/temp/"+key+"/user/default.css");
+											} else {
+												var fileName = "/temp/"+key+"/" + activeTab.attr('file');
+											}
+
 											//Update the file on server
 											$.ajax({
 												url: '/index/update-file/',
@@ -124,8 +149,12 @@ $(document).ready(function()
 										if($('.CodeMirror, .cm-s-solarized').siblings('textarea').hasClass('javascript-editor')) {
 											//Check which sub-tab is active
 											var activeTab = $('.CodeMirror, .cm-s-solarized').siblings('.sub-tabs').children('.active-tab');
-											var fileName = activeTab.attr('file').replace("/temp/user/default.js", "/temp/"+key+"/user/default.js");
 
+											if(activeTab.attr('file').indexOf("/temp/user/default.js") != -1) {
+												var fileName = activeTab.attr('file').replace("/temp/user/default.js", "/temp/"+key+"/user/default.js");
+											} else {
+												var fileName = "/temp/"+key+"/" + activeTab.attr('file');
+											}
 											//Update the file on server
 											$.ajax({
 												url: '/index/update-file/',

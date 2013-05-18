@@ -8,10 +8,9 @@ class Model_File extends Core_Model
 			$data = array();
 			$sources = array();
 
-			$ns = new Zend_Session_Namespace('session');
-			$key = $ns->key;
-
 			$host = self::getHostFromUrl($hostUrl);
+
+			$key = $_SESSION['key'];
 			
 			$sessionPath = TEMP_PATH . '/' . $key;
 
@@ -34,9 +33,9 @@ class Model_File extends Core_Model
 					$fileContents = self::preventIframeBusting($fileContents);
 				}
 				fwrite($handle, $fileContents);
-				$data[$fileName][0] = $filePath;
+				$data[$fileName][0] = $host . '/' . $fileName;
 				$data[$fileName][1] = file($hostPath . '/'. $fileName);
-				$sources[$url] = $filePath;
+				$sources[$url] = '/' . $host . '/' . $fileName;
 				fclose($handle);
 			}
 
@@ -52,7 +51,7 @@ class Model_File extends Core_Model
 		foreach($html->find('script') as $element) {
 			foreach($sources as $id => $source) {
 				if($element->src == $id) {
-					$contents = str_replace($element->src, BASE_URL . $source, $contents);
+					$contents = str_replace($element->src, $source, $contents);
 				}
 			}
 		}
@@ -65,7 +64,7 @@ class Model_File extends Core_Model
 		foreach($html->find('link[rel=stylesheet]') as $element) {
 			foreach($sources as $id => $source) {
 				if($element->href == $id) {
-					$contents = str_replace($element->href, BASE_URL . $source, $contents);
+					$contents = str_replace($element->href, $source, $contents);
 				}
 			}
 		}

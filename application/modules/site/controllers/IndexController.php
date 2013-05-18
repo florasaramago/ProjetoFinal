@@ -44,7 +44,6 @@ class IndexController extends Core_Controller
 
 				$contents = $fileModel->preventIframeBusting($contents);
 
-				_d($css['data']);
 				$this->view->javascripts = $javascripts['data'];
 				$this->view->css = $css['data'];
 				$this->view->contents = $contents;
@@ -63,9 +62,7 @@ class IndexController extends Core_Controller
 	{
 		if ($this->_request->isXmlHttpRequest()) {
 			if($this->_request->isPost()) {
-				$ns = new Zend_Session_Namespace('session');
-
-				$this->_helper->json->sendJson($ns->key);
+				$this->_helper->json->sendJson($_SESSION['key']);
 			} else {
 				exit;
 			}
