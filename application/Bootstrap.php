@@ -58,22 +58,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 			$key = md5(Zend_Session::getId() . $randomString . time());
 
-			$sessionPath = TEMP_PATH . '/' . $key;
+			$_SESSION['key'] = $key;
+		}
 
-			if(!is_dir($sessionPath)) {
-				if(mkdir($sessionPath, 0777)) {
-					$userPath = $sessionPath . '/user';
+		$sessionPath = TEMP_PATH . '/' . $_SESSION['key'];
 
-					if(!is_dir($userPath)) {
-						if(mkdir($userPath, 0777)) {
-							$cssHandle = fopen($userPath . '/default.css', "w");
-							$jsHandle = fopen($userPath . '/default.js', "w");
+		if(!is_dir($sessionPath)) {
+			if(mkdir($sessionPath, 0777)) {
+				$userPath = $sessionPath . '/user';
 
-							$_SESSION['cssHandle'] = $cssHandle;
-							$_SESSION['jsHandle'] = $jsHandle;
+				if(!is_dir($userPath)) {
+					if(mkdir($userPath, 0777)) {
+						$cssHandle = fopen($userPath . '/default.css', "w");
+						$jsHandle = fopen($userPath . '/default.js', "w");
 
-							$_SESSION['key'] = $key;
-						}
+						$_SESSION['cssHandle'] = $cssHandle;
+						$_SESSION['jsHandle'] = $jsHandle;
 					}
 				}
 			}

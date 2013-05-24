@@ -75,7 +75,9 @@ $(document).ready(function()
 					$(this).addClass('active-tab');
 					if($('.active-tab').attr('file').indexOf("/temp/user/default.css") != -1) {
 						var fileName = $('.active-tab').attr('file')
-																.replace("/temp/user/default.css", "/temp/"+key+"/user/default.css")
+																.replace("/temp/user/default.css", "/temp/"+key+"/user/default.css");
+					} else if($('.active-tab').attr('file').indexOf("/temp/user/default.js") != -1) {
+						var fileName = $('.active-tab').attr('file')
 																.replace("/temp/user/default.js", "/temp/"+key+"/user/default.js");
 					} else {
 						var fileName = "/temp/"+key+"/" + $('.active-tab').attr('file');
