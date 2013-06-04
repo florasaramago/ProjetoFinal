@@ -292,6 +292,21 @@ $(document).ready(function()
 						});
 					});
 				});
+
+				$('#submit-url-button').on('click', function(e) {
+					e.preventDefault();
+
+					$('#confirm-clear').dialog({ dialogClass: 'no-close'}); 
+					$('#clear-editor :button').blur();
+
+					$('.no').on('click', function() {
+						$(this).parents(".ui-dialog-content").dialog('close');
+					});
+
+					$('.yes').on('click', function() {
+						$('.url-form').submit();
+					});
+				});
 			}, 
 			error: function (data) {
 				console.log(data.responseText);
