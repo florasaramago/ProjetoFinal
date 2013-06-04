@@ -242,13 +242,13 @@ input[type=text]:focus, textarea:focus {
 
 .smaller {
 	-ms-transition-duration: 1s;
-	-ms-transform: scale(0.73);
+	-ms-transform: scale(0.70);
 	-webkit-transition-duration: 1s;
-	-webkit-transform: scale(0.73);
+	-webkit-transform: scale(0.70);
 	-moz-transition-duration: 1s;
-	-moz-transform: scale(0.73);
+	-moz-transform: scale(0.70);
 	-o-transition-duration: 1s;
-	-o-transform: scale(0.73);
+	-o-transform: scale(0.70);
 }
 
 #resize {

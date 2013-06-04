@@ -4,6 +4,7 @@ $(document).ready(function()
 	var jsEditor;
 	var key;
 	var iframe = document.getElementById('simulation');
+	var baseURL = "http://projetofinal.dev";
 
 	//Create tabs
 	$('#code-editor').tabs();
@@ -13,41 +14,48 @@ $(document).ready(function()
 		lineNumbers: true, lineWrapping: true, mode: "text/html", theme: "solarized", tabMode: "indent"
 	});
 
+	//Get session key to generate correct URLs for files
 	$.ajax({
 		url: '/index/session-key/',
 			success: function(response){
 				key = String(response);
 
+				//Update simulator with new contents
 				function updateSimulator() {
+					//Get content from HTML textarea and replace fake URLs with correct ones
 					var htmlCode = String(htmlEditor.getValue()
-									.replace("/temp/user/default.css", "/temp/"+key+"/user/default.css")
-									.replace("/temp/user/default.js", "/temp/"+key+"/user/default.js"));
+									.replace("/temp/user/default.css", baseURL+"/temp/"+key+"/user/default.css")
+									.replace("/temp/user/default.js", baseURL+"/temp/"+key+"/user/default.js"));
 
+					//Replace fake CSS URLs with correct ones before updating simulator
 					$('#tabs-2').find('.sub-tab').each(function() {
 						if($(this).attr('file') != "/temp/user/default.css") {
-							htmlCode = htmlCode.replace("/"+$(this).attr('file'), "http://projetofinal.dev/temp/"+key+"/" + $(this).attr('file'));
+							htmlCode = htmlCode.replace("/"+$(this).attr('file'), baseURL+"/temp/"+key+"/" + $(this).attr('file'));
 						}
 					});
 					
+					//Replace fake CSS URLs with correct ones before updating simulator
 					$('#tabs-3').find('.sub-tab').each(function() {
 						if($(this).attr('file') != "/temp/user/default.js") {
-							htmlCode = htmlCode.replace("/"+$(this).attr('file'), "http://projetofinal.dev/temp/"+key+"/" + $(this).attr('file'));
+							htmlCode = htmlCode.replace("/"+$(this).attr('file'), baseURL+"/temp/"+key+"/" + $(this).attr('file'));
 						}
 					});		
 
-					//console.log(htmlCode);
-
+					//Replaces simulator's HTML with new one, with correct URLs
 					iframe.contentWindow.document.open('text/html', 'replace');
 					iframe.contentWindow.document.write(htmlCode);
 					iframe.contentWindow.document.close();
 				}
 
+				//Initial simulator update
 				updateSimulator();
 
 				//Edit HTML code
-				$('.CodeMirror, .cm-s-solarized').on('keyup', function () { 
-					//Update simulator
-					updateSimulator();
+				$('.CodeMirror-wrap').find('textarea').typing({
+					stop: function() {
+						updateSimulator();
+					},
+					delay: 700
 				});
 
 				//Change to CSS tab
@@ -73,14 +81,16 @@ $(document).ready(function()
 					//Update active sub-tab
 					$('.active-tab').removeClass('active-tab');
 					$(this).addClass('active-tab');
+
+					//Get correct file name of current file, to be updated on editing
 					if($('.active-tab').attr('file').indexOf("/temp/user/default.css") != -1) {
 						var fileName = $('.active-tab').attr('file')
-																.replace("/temp/user/default.css", "/temp/"+key+"/user/default.css");
+																.replace("/temp/user/default.css", baseURL+"/temp/"+key+"/user/default.css");
 					} else if($('.active-tab').attr('file').indexOf("/temp/user/default.js") != -1) {
 						var fileName = $('.active-tab').attr('file')
-																.replace("/temp/user/default.js", "/temp/"+key+"/user/default.js");
+																.replace("/temp/user/default.js", baseURL+"/temp/"+key+"/user/default.js");
 					} else {
-						var fileName = "/temp/"+key+"/" + $('.active-tab').attr('file');
+						var fileName = baseURL+"/temp/"+key+"/" + $('.active-tab').attr('file');
 					}
 
 					//Change code inside CodeMirror textarea according to selected sub-tab
@@ -92,10 +102,7 @@ $(document).ready(function()
 								$('#css-editor').siblings('.CodeMirror').remove();
 								$('#javascript-editor').siblings('.CodeMirror').remove();
 
-								//Load received code into correct textarea
-								$('#' + $('.ui-tabs-active').attr('l') + '-editor').val(response);
-
-								//Re-create CodeMirror textarea
+								//If the current tab is the CSS tab
 								if($('.ui-tabs-active').attr('l') == "css") {
 									//Create CSS textarea
 									cssEditor = CodeMirror.fromTextArea(document.getElementById('css-editor'), {
@@ -108,17 +115,16 @@ $(document).ready(function()
 									//Edit CSS code
 									$('.CodeMirror-wrap').find('textarea').typing({
 										stop: function() {
-											//Check if it's CSS textarea
+											//Confirm if it's CSS textarea
 											if($('.CodeMirror, .cm-s-solarized').siblings('textarea').hasClass('css-editor')) {
 
 												//Check which sub-tab is active
 												var activeTab = $('.CodeMirror, .cm-s-solarized').siblings('.sub-tabs').children('.active-tab');
 												
+												//Get correct file name of current file
 												if(activeTab.attr('file').indexOf("/temp/user/default.css") != -1) {
-
 													var fileName = activeTab.attr('file').replace("/temp/user/default.css", "/temp/"+key+"/user/default.css");
 												} else {
-
 													var fileName = "/temp/"+key+"/" + activeTab.attr('file');
 												}
 
@@ -142,6 +148,8 @@ $(document).ready(function()
 										},
 										delay: 700
 									});
+
+								//If the current tab is the JS tab
 								} else if ($('.ui-tabs-active').attr('l') == "javascript") {
 									//Create JavaScript textarea
 									jsEditor = CodeMirror.fromTextArea(document.getElementById('javascript-editor'), {
@@ -154,11 +162,12 @@ $(document).ready(function()
 									//Edit JavaScript code
 									$('.CodeMirror-wrap').find('textarea').typing({
 										stop: function() {
-										//Check if it's JavaScript textarea
+											//Confirm if it's JavaScript textarea
 											if($('.CodeMirror, .cm-s-solarized').siblings('textarea').hasClass('javascript-editor')) {
 												//Check which sub-tab is active
 												var activeTab = $('.CodeMirror, .cm-s-solarized').siblings('.sub-tabs').children('.active-tab');
 
+												//Get correct file name of current file
 												if(activeTab.attr('file').indexOf("/temp/user/default.js") != -1) {
 													var fileName = activeTab.attr('file').replace("/temp/user/default.js", "/temp/"+key+"/user/default.js");
 												} else {
@@ -195,9 +204,10 @@ $(document).ready(function()
 					});
 				});
 
+				//Add external libraries
 				$('.library-checkbox').change(function() {
 					if($(this).is(":checked")) {
-						//Usuário marcou a checkbox
+						//User checked checkbox
 						$.ajax({
 							url: '/index/add-library/',
 							data: 'lib='+ $(this).attr('value')+'&html='+ escape(htmlEditor.getValue()),
@@ -215,7 +225,7 @@ $(document).ready(function()
 							dataType: "json"
 						});
 					} else {
-						//Usuário desmarcou a checkbox
+						//User unchecked checkbox
 						$.ajax({
 							url: '/index/remove-library/',
 							data: 'lib='+ $(this).attr('value')+'&html='+ escape(htmlEditor.getValue()),
@@ -235,6 +245,7 @@ $(document).ready(function()
 					}
 				});
 
+				//Clear editor
 				$('#clear-editor').on('click', function() {
 					$('#confirm-clear').dialog({ dialogClass: 'no-close'}); 
 					$('#clear-editor :button').blur();
@@ -244,7 +255,41 @@ $(document).ready(function()
 					});
 
 					$('.yes').on('click', function() {
-						location.reload();
+						var ok1 = false, ok2 = false;
+
+						//Clear CSS
+						$.ajax({
+							url: '/index/update-file/',
+							data: 'file=/temp/'+key+'/user/default.css&text=',
+								success: function(response){
+								}, 
+								error: function (data) {
+									console.log(data.responseText);
+								},
+								complete: function(data) {
+
+									//Clear JavaScript, after CSS cleared
+									$.ajax({
+										url: '/index/update-file/',
+										data: 'file=/temp/'+key+'/user/default.js&text=',
+											success: function(response){
+												ok2 = true;
+											}, 
+											error: function (data) {
+												console.log(data.responseText);
+											},
+											complete: function(data) {
+												//Clear HTML, after JS cleared
+												location.reload();
+											},
+										type: "POST", 
+										dataType: "json"
+									});
+
+								},
+							type: "POST", 
+							dataType: "json"
+						});
 					});
 				});
 			}, 

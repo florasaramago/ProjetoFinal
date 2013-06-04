@@ -96,7 +96,7 @@ class IndexController extends Core_Controller
 				$curlModel = new Model_Curl();
 				$fileName = $this->_request->getPost('file');
 
-				$contentsString = $curlModel->curlRequestForFiles('http://projetofinal.dev' . $fileName);
+				$contentsString = $curlModel->curlRequestForFiles($fileName);
 
 				$this->_helper->json->sendJson($contentsString);
 			} else {
