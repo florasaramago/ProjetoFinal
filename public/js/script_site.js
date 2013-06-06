@@ -3,8 +3,9 @@ $(document).ready(function()
 	var cssEditor;
 	var jsEditor;
 	var key;
-	var iframe = document.getElementById('simulation');
+	var iframe = document.getElementById('iphone-simulation');
 	var baseURL = "http://projetofinal.dev";
+	var currentPhone = "ios";
 
 	//Create tabs
 	$('#code-editor').tabs();
@@ -204,6 +205,29 @@ $(document).ready(function()
 					});
 				});
 
+				//Change simulator type
+				$("input[name='sim-type']").change(function() {
+					if ($("input[name='sim-type']:checked").val() == 'ios') {
+						currentPhone = "iphone";
+						$('#android').addClass('hidden');
+						$('#iphone').removeClass('hidden');
+						$('#code-editor').css('width', '68%');
+						$('#second-controls').css('margin-left', '60px');
+						$('#third-controls').css('margin-left', '85px');
+						iframe = document.getElementById('iphone-simulation');
+						updateSimulator();
+					} else if ($("input[name='sim-type']:checked").val() == 'android') {
+						currentPhone = "android";
+						$('#iphone').addClass('hidden');
+						$('#android').removeClass('hidden');
+						$('#code-editor').css('width', '62%');
+						$('#second-controls').css('margin-left', '47px');
+						$('#third-controls').css('margin-left', '60px');
+						iframe = document.getElementById('android-simulation');
+						updateSimulator();
+					}
+				});
+
 				//Add external libraries
 				$('.library-checkbox').change(function() {
 					if($(this).is(":checked")) {
@@ -293,6 +317,7 @@ $(document).ready(function()
 					});
 				});
 
+				//Ask for confirmation before loading a new website
 				$('#submit-url-button').on('click', function(e) {
 					e.preventDefault();
 
