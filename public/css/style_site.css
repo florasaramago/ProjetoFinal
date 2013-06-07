@@ -195,7 +195,7 @@ input[type=text]:focus, textarea:focus {
 }
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-	background-image: url(../img/brushed_alu.png);
+	background-image: url(../img/cross_scratches.png);
 }
 
 .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
@@ -218,7 +218,7 @@ input[type=text]:focus, textarea:focus {
 
 .sub-tabs {
 	max-width: 800px;
-	padding-bottom: 10px;
+	padding-bottom: 8px;
 }
 
 .sub-tab {
@@ -288,7 +288,7 @@ input[type=text]:focus, textarea:focus {
 #inner-editor {
 	display: block;
 	border: 1px solid #AAA;
-	background-image: url(../img/brushed_alu.png);
+	background-image: url(../img/cross_scratches.png);
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	-khtml-border-radius: 4px;
@@ -296,7 +296,7 @@ input[type=text]:focus, textarea:focus {
 }
 
 .ui-tabs .ui-tabs-panel {
-	
+	padding: 0.5em 0.5em;
 }
 
 .url-form {
@@ -346,6 +346,11 @@ input[type=text]:focus, textarea:focus {
 .export {
 	margin-top: 10px;
 	margin-left: 0px;
+	box-shadow: 4px 4px 9px -5px rgb(175, 175, 172);
+}
+
+#clear-editor {
+	box-shadow: 4px 4px 9px -5px rgb(175, 175, 172);
 }
 
 .control-section {
