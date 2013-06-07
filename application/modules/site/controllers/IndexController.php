@@ -10,9 +10,12 @@ class IndexController extends Core_Controller
 			//Get and correct URL
 			$url = $this->_request->getPost('url');
 			$url = $curlModel->correctUrl($url);
+
+			//Get current user agent
+			$userAgent = $this->_request->getPost('user-agent');
 			
 			//Get contents from URL using cURL
-			$contents = $curlModel->curlRequest($url);
+			$contents = $curlModel->curlRequest($url, $userAgent);
 
 			//Handle possible errors
 			if(!$contents) {
@@ -57,9 +60,13 @@ class IndexController extends Core_Controller
 				$this->view->javascripts = $javascripts['data'];
 				$this->view->css = $css['data'];
 				$this->view->contents = $contents;
+				$this->view->userAgent = $userAgent;
 				$this->view->post = 1;
 			}
 		} else {
+			$os = $this->_request->getParam('os');
+
+			$this->view->userAgent = $os ? $os : "ios";
 			$this->view->post = 0;
 		}
 	}

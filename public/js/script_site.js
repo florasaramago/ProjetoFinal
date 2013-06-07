@@ -15,6 +15,15 @@ $(document).ready(function()
 		lineNumbers: true, lineWrapping: true, mode: "text/html", theme: "solarized", tabMode: "indent"
 	});
 
+	if($('#user-agent-field').val() == "android") {
+		currentPhone = "android";
+		$('#code-editor').css('width', '62%');
+		$('#second-controls').css('margin-left', '47px');
+		$('#third-controls').css('margin-left', '60px');
+		$("#android-radio").attr('checked', true);
+		iframe = document.getElementById('android-simulation');
+	}
+
 	//Get session key to generate correct URLs for files
 	$.ajax({
 		url: '/index/session-key/',
@@ -23,6 +32,7 @@ $(document).ready(function()
 
 				//Update simulator with new contents
 				function updateSimulator() {
+					console.log('oi');
 					//Get content from HTML textarea and replace fake URLs with correct ones
 					var htmlCode = String(htmlEditor.getValue()
 									.replace("/temp/user/default.css", baseURL+"/temp/"+key+"/user/default.css")
@@ -214,6 +224,7 @@ $(document).ready(function()
 						$('#code-editor').css('width', '68%');
 						$('#second-controls').css('margin-left', '60px');
 						$('#third-controls').css('margin-left', '85px');
+						$('#user-agent-field').attr('value', 'ios');
 						iframe = document.getElementById('iphone-simulation');
 						updateSimulator();
 					} else if ($("input[name='sim-type']:checked").val() == 'android') {
@@ -223,6 +234,7 @@ $(document).ready(function()
 						$('#code-editor').css('width', '62%');
 						$('#second-controls').css('margin-left', '47px');
 						$('#third-controls').css('margin-left', '60px');
+						$('#user-agent-field').attr('value', 'android');
 						iframe = document.getElementById('android-simulation');
 						updateSimulator();
 					}
@@ -304,7 +316,7 @@ $(document).ready(function()
 											},
 											complete: function(data) {
 												//Clear HTML, after JS cleared
-												location.reload();
+												window.location = baseURL + "?os=" + currentPhone;
 											},
 										type: "POST", 
 										dataType: "json"

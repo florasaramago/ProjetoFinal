@@ -4,6 +4,7 @@
 		<form class="url-form" method="post" action="/index" name="openUrl">
 			<label for="url">URL:</label>
 			<input type="text" name="url" />
+			<input type="hidden" name="user-agent" id="user-agent-field" value="<?php echo $this->userAgent; ?>">
 			<input type="submit" id="submit-url-button" class="gray-button" value="Ir"/>
 		</form>
 		<ul id="lang-menu">
@@ -66,9 +67,9 @@
 					<input type="checkbox" class="library-checkbox control-option" id="jquery-mobile" value="jquery-mobile">jQuery Mobile
 					<br><br>
 					<span class="control-section">Simulador:</span><br>
-					<input type="radio" class="control-option" name="sim-type" value="ios" checked="checked"> iOS
+					<input type="radio" class="control-option" id="ios-radio" name="sim-type" value="ios" checked="checked"> iOS
 					<br>
-					<input type="radio" class="control-option" name="sim-type" value="android"> Android
+					<input type="radio" class="control-option" id="android-radio" name="sim-type" value="android"> Android
 					<br><br>
 				</div>
 				<div id="second-controls">
@@ -90,10 +91,10 @@
 		</div>
 	</div>
 	
-	<div id="iphone">
+	<div id="iphone" <?php if($this->userAgent == "android") echo 'class="hidden"'; ?>>
 		<iframe id="iphone-simulation" src="about:blank"></iframe>
 	</div>
-	<div id="android" class="hidden">
+	<div id="android" <?php if($this->userAgent == "ios" || $this->userAgent == "iphone") echo 'class="hidden"'; ?>>
 		<iframe id="android-simulation" src="about:blank"></iframe>
 	</div>
 	<div class="clear"></div>
