@@ -44,6 +44,7 @@ input[type=text]:focus, textarea:focus {
 	font-family:Avenir;
 	font-size:14px;
 	font-weight:normal;
+	box-shadow: 4px 4px 9px -5px rgb(175, 175, 172);
 	
 	text-decoration:none;
 	text-shadow:1px -1px 0px #ffffff;
@@ -54,6 +55,7 @@ input[type=text]:focus, textarea:focus {
 	background:-moz-linear-gradient( center top, #dfdfdf 5%, #f5f5f5 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#f5f5f5');
 	background-color:#dfdfdf;
+	box-shadow: none;
 }
 
 .gray-button:active {
@@ -343,13 +345,13 @@ input[type=text]:focus, textarea:focus {
 	margin-top: 10px;
 }
 
+.lib-name-disabled {
+	color: #CCC;
+}
+
 .export {
 	margin-top: 10px;
 	margin-left: 0px;
-	box-shadow: 4px 4px 9px -5px rgb(175, 175, 172);
-}
-
-#clear-editor {
 	box-shadow: 4px 4px 9px -5px rgb(175, 175, 172);
 }
 
@@ -374,6 +376,7 @@ input[type=text]:focus, textarea:focus {
 	font-weight: normal;
 	font-size: 15px;
 	/*background: url(../img/brushed_alu.png);*/
+	z-index: 3000;
 }
 
 .ui-dialog-title {
@@ -397,4 +400,25 @@ input[type=text]:focus, textarea:focus {
 .yes { color: rgb(50, 184, 50); }
 
 .no { color: rgb(184, 60, 60); }
+
+.dark-background {
+	background-color: rgb(68, 66, 66);
+	opacity: 0.5;
+	position: absolute;
+	margin: 0px;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 2000;
+	display: none;
+}
+
+#loader {
+	float:left;
+    margin-left:47%;
+    margin-top:28%;
+    position:relative;
+    display:none;
+}
 

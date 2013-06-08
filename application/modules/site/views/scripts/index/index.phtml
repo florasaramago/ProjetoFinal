@@ -8,11 +8,11 @@
 			<input type="submit" id="submit-url-button" class="gray-button" value="Ir"/>
 		</form>
 		<ul id="lang-menu">
-	   	<li l="html"><a href="#tabs-1">HTML</a></li>
-	   	<li l="css"><a href="#tabs-2">CSS</a></li>
-	   	<li l="javascript"><a href="#tabs-3">JavaScript</a></li>
-	   </ul>
-	   <div id="inner-editor">
+		   	<li l="html"><a href="#tabs-1">HTML</a></li>
+		   	<li l="css"><a href="#tabs-2">CSS</a></li>
+		   	<li l="javascript"><a href="#tabs-3">JavaScript</a></li>
+	   	</ul>
+	   	<div id="inner-editor">
 			<div id="tabs-1">
 		   	<?php if($this->contents): ?>
 		   		<textarea id="html-editor"><?php echo $this->contents; ?></textarea>
@@ -30,8 +30,8 @@
 </html></textarea>
 		 		<?php endif; ?>
 		        
-		   </div>
-		   <div id="tabs-2">
+		   	</div>
+		   	<div id="tabs-2">
 		    	<div class="sub-tabs">
 		    		<?php if($this->post == 1): ?>
 		    			<?php if($this->css): ?>
@@ -42,10 +42,10 @@
 		    		<?php else: ?>
 			    		<span class="sub-tab" file="/temp/user/default.css">default.css</span>
 			    	<?php endif; ?>
-			   </div>
+			   	</div>
 		        <textarea id="css-editor" class="css-editor"></textarea>
-		   </div>
-		   <div id="tabs-3">
+		   	</div>
+		   	<div id="tabs-3">
 		    	<div class="sub-tabs">
 		    		<?php if($this->post == 1): ?>
 		    			<?php if($this->javascripts): ?>
@@ -56,15 +56,19 @@
 		    		<?php else: ?>
 			    		<span class="sub-tab" file="/temp/user/default.js">default.js</span>
 			    	<?php endif; ?>
-			   </div>
-		      <textarea id="javascript-editor" class="javascript-editor"></textarea>
-		   </div>	
-		   <div id="controls">
-		   	<div id="first-controls">
-			   	<span class="control-section">Incluir bibliotecas:</span><br>
-			   	<input type="checkbox" class="library-checkbox control-option" id="jquery" value="jquery">jQuery
-					<input type="checkbox" class="library-checkbox control-option" id="jquery-ui" value="jquery-ui">jQuery UI
-					<input type="checkbox" class="library-checkbox control-option" id="jquery-mobile" value="jquery-mobile">jQuery Mobile
+			   	</div>
+		      	<textarea id="javascript-editor" class="javascript-editor"></textarea>
+		   	</div>
+
+		   	<div id="controls">
+		   		<div id="first-controls">
+				   	<span class="control-section">Incluir bibliotecas:</span><br>
+				   	<input type="checkbox" class="library-checkbox control-option" id="jquery" value="jquery">
+				   	<label for="jquery" class="<?php echo $this->post ? "lib-name-disabled" : "lib-name" ?>">jQuery</label>
+					<input type="checkbox" class="library-checkbox control-option" id="jquery-ui" value="jquery-ui">
+					<label for="jquery-ui" class="<?php echo $this->post ? "lib-name-disabled" : "lib-name" ?>">jQuery UI</label>
+					<input type="checkbox" class="library-checkbox control-option" id="jquery-mobile" value="jquery-mobile">
+					<label for="jquery-mobile" class="<?php echo $this->post ? "lib-name-disabled" : "lib-name" ?>">jQuery Mobile</label>
 					<br><br>
 					<span class="control-section">Simulador:</span><br>
 					<input type="radio" class="control-option" id="ios-radio" name="sim-type" value="ios" checked="checked"> iOS
@@ -98,10 +102,14 @@
 		<iframe id="android-simulation" src="about:blank"></iframe>
 	</div>
 	<div class="clear"></div>
-	<div id="confirm-clear" title="Atenção" style="display: none;">
-		Ao confirmar esta ação, todas as alterações no código atual serão perdidas. Tem certeza de que deseja continuar?
-		<br>
-		<button id="clear-editor" class="gray-button small-button confirm-button yes">Sim</button>
-		<button id="clear-editor" class="gray-button small-button confirm-button no">Não</button>
+	
+	<div class="dark-background">
+		<img id="loader" src="/img/ajax-loader2.gif">
+		<div id="confirm-clear" title="Atenção" style="display: none">
+			Ao confirmar esta ação, todas as alterações no código atual serão perdidas. Tem certeza de que deseja continuar?
+			<br>
+			<button id="clear-editor" class="gray-button small-button confirm-button yes">Sim</button>
+			<button id="clear-editor" class="gray-button small-button confirm-button no">Não</button>
+		</div>
 	</div>
 </div>

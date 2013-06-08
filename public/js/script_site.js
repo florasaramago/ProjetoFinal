@@ -24,6 +24,12 @@ $(document).ready(function()
 		iframe = document.getElementById('android-simulation');
 	}
 
+	$('.dark-background').css('width', $(document).width()).css('height', $(document).height());
+	$('.lib-name-disabled').each(function() {
+		$('#'+$(this).attr('for')).attr('disabled', 'disabled');
+	});
+	
+
 	//Get session key to generate correct URLs for files
 	$.ajax({
 		url: '/index/session-key/',
@@ -32,7 +38,6 @@ $(document).ready(function()
 
 				//Update simulator with new contents
 				function updateSimulator() {
-					console.log('oi');
 					//Get content from HTML textarea and replace fake URLs with correct ones
 					var htmlCode = String(htmlEditor.getValue()
 									.replace("/temp/user/default.css", baseURL+"/temp/"+key+"/user/default.css")
@@ -283,15 +288,21 @@ $(document).ready(function()
 
 				//Clear editor
 				$('#clear-editor').on('click', function() {
+					$('.dark-background').show();
 					$('#confirm-clear').dialog({ dialogClass: 'no-close'}); 
 					$('#clear-editor :button').blur();
 
 					$('.no').on('click', function() {
 						$(this).parents(".ui-dialog-content").dialog('close');
+						$('.dark-background').hide();
 					});
 
 					$('.yes').on('click', function() {
 						var ok1 = false, ok2 = false;
+
+						$('.ui-dialog').fadeOut(function() {
+							$('#loader').fadeIn();
+						})
 
 						//Clear CSS
 						$.ajax({
@@ -332,15 +343,20 @@ $(document).ready(function()
 				//Ask for confirmation before loading a new website
 				$('#submit-url-button').on('click', function(e) {
 					e.preventDefault();
+					$('.dark-background').show();
 
 					$('#confirm-clear').dialog({ dialogClass: 'no-close'}); 
 					$('#clear-editor :button').blur();
 
 					$('.no').on('click', function() {
 						$(this).parents(".ui-dialog-content").dialog('close');
+						$('.dark-background').hide();
 					});
 
 					$('.yes').on('click', function() {
+						$('.ui-dialog').fadeOut(function() {
+							$('#loader').fadeIn();
+						})
 						$('.url-form').submit();
 					});
 				});
