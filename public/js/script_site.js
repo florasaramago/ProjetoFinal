@@ -223,9 +223,9 @@ $(document).ready(function()
 				//Change simulator type
 				$("input[name='sim-type']").change(function() {
 					if ($("input[name='sim-type']:checked").val() == 'ios') {
-						currentPhone = "iphone";
+						currentPhone = "ios";
 						$('#android').addClass('hidden');
-						$('#iphone').removeClass('hidden');
+						$('#ios').removeClass('hidden');
 						$('#code-editor').css('width', '68%');
 						$('#second-controls').css('margin-left', '60px');
 						$('#third-controls').css('margin-left', '85px');
@@ -234,7 +234,7 @@ $(document).ready(function()
 						updateSimulator();
 					} else if ($("input[name='sim-type']:checked").val() == 'android') {
 						currentPhone = "android";
-						$('#iphone').addClass('hidden');
+						$('#ios').addClass('hidden');
 						$('#android').removeClass('hidden');
 						$('#code-editor').css('width', '62%');
 						$('#second-controls').css('margin-left', '47px');
@@ -374,9 +374,9 @@ $(document).ready(function()
 	$('.resize').change(function() {
 		if($(this).is(":checked")) {
 			if($(this).attr('value') == "small") {
-				$('#smartphone').addClass('smaller');
+				$('#'+currentPhone).addClass('smaller');
 			} else {
-				$('#smartphone').removeClass('smaller');
+				$('#'+currentPhone).removeClass('smaller');
 			}  
 		}
 	});
