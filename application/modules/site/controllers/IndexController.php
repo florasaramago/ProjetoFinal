@@ -19,9 +19,9 @@ class IndexController extends Core_Controller
 
 			//Handle possible errors
 			if(!$contents) {
-				$contents = $curlModel->tryMobileVersion($url);
+				$contents = $curlModel->tryMobileVersion($url, $userAgent);
 			} elseif (substr_count($contents, "<p>The document has moved <a href=")) {
-				$contents = $curlModel->handleRedirect($contents);
+				$contents = $curlModel->handleRedirect($contents, $userAgent);
 			} else {
 				//If there are no errors, get received HTML
 				$html = str_get_html($contents);

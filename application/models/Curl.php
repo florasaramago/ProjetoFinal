@@ -60,18 +60,18 @@ class Model_Curl extends Core_Model
 	public function tryMobileVersion ($url)
 	{
 		$newUrl = substr($url, 0, 7) . 'm.' . substr($url, 7);
-		$contents = self::curlRequest($newUrl);
+		$contents = self::curlRequest($newUrl, $userAgent);
 		return $contents;
 	}
 	
-	public function handleRedirect ($contents)
+	public function handleRedirect ($contents, $userAgent)
 	{
 		$l = '<p>The document has moved <a href="';
 		$r = '">here';
 		$il = strpos($contents,$l,0)+strlen($l);
 		$ir = strpos($contents,$r,$il);
 		$newUrl = substr($contents,$il,($ir-$il));
-		$contents = self::curlRequest($newUrl);
+		$contents = self::curlRequest($newUrl, $userAgent);
 		return $contents;
 	}
 
