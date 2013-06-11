@@ -84,12 +84,14 @@
 				</div>
 				<div id="third-controls">
 					<span class="control-section">Exportar arquivos:</span><br>
-					<input type="checkbox" class="library-checkbox control-option" id="jquery" value="jquery">HTML
-					<br>
-					<input type="checkbox" class="library-checkbox control-option" id="jquery-ui" value="jquery-ui">CSS <br>
-					<input type="checkbox" class="library-checkbox control-option" id="jquery-mobile" value="jquery-mobile">JavaScript
-					<br>
-					<input type="submit" class="gray-button small-button export" value="Exportar"/>
+					<form method="post" action="/index/export">
+						<input type="checkbox" class="library-checkbox control-option" name="html">HTML
+						<br>
+						<input type="checkbox" class="library-checkbox control-option" name="css">CSS <br>
+						<input type="checkbox" class="library-checkbox control-option" name="javascript">JavaScript
+						<br>
+						<input type="submit" class="gray-button small-button export" value="Exportar"/>
+					</form>
 				</div>
 		   </div>
 		</div>

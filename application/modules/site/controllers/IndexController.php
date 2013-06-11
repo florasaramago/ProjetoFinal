@@ -71,6 +71,35 @@ class IndexController extends Core_Controller
 		}
 	}
 
+	public function exportAction() {
+		if($this->_request->isPost()) {
+			$fileModel = new File_Model();
+			$files_to_zip = array();
+
+			$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '\/user\/';
+
+			$handle = fopen($filePath . 'default.html', "w");
+			$fileContents = $this->_request->getPost('htmlCode');
+			fwrite($handle, $fileContents);
+			fclose($handle);
+
+			if(isset($this->_request->getPost('html'))) {
+				$filesToZip[] = $filePath . 'default.html';
+			}
+
+			if(isset($this->_request->getPost('css'))) {
+				$filesToZip[] = $filePath . 'default.css';
+			}
+
+			if(isset($this->_request->getPost('javascript'))) {
+				$filesToZip[] = $filePath . 'default.js';
+			}
+			
+			//if true, good; if false, zip creation failed
+			$result = $fileModel->create_zip($files_to_zip,'my-archive.zip');
+		}
+	}
+
 	public function sessionKeyAction ()
 	{
 		if ($this->_request->isXmlHttpRequest()) {
