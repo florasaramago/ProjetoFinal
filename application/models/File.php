@@ -9,7 +9,10 @@ class Model_File extends Core_Model
 			$sources = array();
 
 			$host = self::getHostFromUrl($hostUrl);
-			$sessionPath = TEMP_PATH . '/' . Zend_Session::getId();
+
+			$key = $_SESSION['key'];
+			
+			$sessionPath = TEMP_PATH . '/' . $key;
 
 			if(!is_dir($sessionPath)) {
 				mkdir($sessionPath, 0777);
@@ -23,16 +26,16 @@ class Model_File extends Core_Model
 
 			foreach($urls as $id => $url) {
 				$fileName = substr(strrchr($urls[$id], '/'), 1);
-				$filePath = '/temp/' . Zend_Session::getId() . '/' . $host . '/' . $fileName;
+				$filePath = '/temp/' . $key . '/' . $host . '/' . $fileName;
 				$handle = fopen($hostPath . '/'. $fileName, "w");
 				$fileContents = $curlModel->curlRequestForFiles($urls[$id]);
 				if(substr(strrchr($fileName, "."), 1) == "js") {
 					$fileContents = self::preventIframeBusting($fileContents);
 				}
 				fwrite($handle, $fileContents);
-				$data[$fileName][0] = $filePath;
+				$data[$fileName][0] = $host . '/' . $fileName;
 				$data[$fileName][1] = file($hostPath . '/'. $fileName);
-				$sources[$url] = $filePath;
+				$sources[$url] = '/' . $host . '/' . $fileName;
 				fclose($handle);
 			}
 
@@ -48,7 +51,7 @@ class Model_File extends Core_Model
 		foreach($html->find('script') as $element) {
 			foreach($sources as $id => $source) {
 				if($element->src == $id) {
-					$contents = str_replace($element->src, BASE_URL . $source, $contents);
+					$contents = str_replace($element->src, $source, $contents);
 				}
 			}
 		}
@@ -61,7 +64,7 @@ class Model_File extends Core_Model
 		foreach($html->find('link[rel=stylesheet]') as $element) {
 			foreach($sources as $id => $source) {
 				if($element->href == $id) {
-					$contents = str_replace($element->href, BASE_URL . $source, $contents);
+					$contents = str_replace($element->href, $source, $contents);
 				}
 			}
 		}

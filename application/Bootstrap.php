@@ -53,24 +53,27 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initSession( )
 	{
 		Zend_Session::start();
+		if(!isset($_SESSION['key'])) {
+			$randomString = substr(sha1(mt_rand() . microtime()), mt_rand(0,35), 5);
 
-		if(!Zend_Registry::isRegistered('session')) {
-			$sessionPath = TEMP_PATH . '/' . Zend_Session::getId();
+			$key = md5(Zend_Session::getId() . $randomString . time());
 
-			if(!is_dir($sessionPath)) {
-				if(mkdir($sessionPath, 0777)) {
-					$userPath = $sessionPath . '/user';
+			$_SESSION['key'] = $key;
+		}
 
-					if(!is_dir($userPath)) {
-						if(mkdir($userPath, 0777)) {
-							$cssHandle = fopen($userPath . '/default.css', "w");
-							$jsHandle = fopen($userPath . '/default.js', "w");
+		$sessionPath = TEMP_PATH . '/' . $_SESSION['key'];
 
-							$ns = new Zend_Session_Namespace('defaultFiles');
-							Zend_Registry::set('session', $ns);
-							$ns->cssHandle = $cssHandle;
-							$ns->jsHandle = $jsHandle;
-						}
+		if(!is_dir($sessionPath)) {
+			if(mkdir($sessionPath, 0777)) {
+				$userPath = $sessionPath . '/user';
+
+				if(!is_dir($userPath)) {
+					if(mkdir($userPath, 0777)) {
+						$cssHandle = fopen($userPath . '/default.css', "w");
+						$jsHandle = fopen($userPath . '/default.js', "w");
+
+						$_SESSION['cssHandle'] = $cssHandle;
+						$_SESSION['jsHandle'] = $jsHandle;
 					}
 				}
 			}

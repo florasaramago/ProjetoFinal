@@ -1,7 +1,7 @@
 <?php
 class Model_Curl extends Core_Model
 {
-	public function curlRequest($url) 
+	public function curlRequest($url, $userAgent) 
 	{
 		//Initialize the cURL session
 		$ch = curl_init();
@@ -12,9 +12,14 @@ class Model_Curl extends Core_Model
 		//Ask cURL to return the contents in a variable instead of simply echoing them to  the browser.
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			
-		//Switch user agent to iPhone
-		curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B179 Safari/7534.48.3');
-			
+		if($userAgent == "ios") {
+			//Switch user agent to iPhone
+			curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (iPhone; CPU iPhone OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B179 Safari/7534.48.3');
+		} else {
+			//Switch user agent to Android
+			curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Linux; U; Android 4.1.1; sv-se; GT-I9305N Build/JRO03C) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30');
+		}
+		
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 		
 		curl_setopt($ch, CURLOPT_TRANSFERTEXT, TRUE);
@@ -55,18 +60,18 @@ class Model_Curl extends Core_Model
 	public function tryMobileVersion ($url)
 	{
 		$newUrl = substr($url, 0, 7) . 'm.' . substr($url, 7);
-		$contents = self::curlRequest($newUrl);
+		$contents = self::curlRequest($newUrl, $userAgent);
 		return $contents;
 	}
 	
-	public function handleRedirect ($contents)
+	public function handleRedirect ($contents, $userAgent)
 	{
 		$l = '<p>The document has moved <a href="';
 		$r = '">here';
 		$il = strpos($contents,$l,0)+strlen($l);
 		$ir = strpos($contents,$r,$il);
 		$newUrl = substr($contents,$il,($ir-$il));
-		$contents = self::curlRequest($newUrl);
+		$contents = self::curlRequest($newUrl, $userAgent);
 		return $contents;
 	}
 
