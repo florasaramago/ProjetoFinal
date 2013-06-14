@@ -73,30 +73,34 @@ class IndexController extends Core_Controller
 
 	public function exportAction() {
 		if($this->_request->isPost()) {
-			$fileModel = new File_Model();
-			$files_to_zip = array();
+			$fileModel = new Model_File();
+			$filesToZip = array();
 
-			$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '\/user\/';
+			$html = $this->_request->getPost('html');
+			$css = $this->_request->getPost('css');
+			$javascript = $this->_request->getPost('javascript');
+
+			$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '/user/';
 
 			$handle = fopen($filePath . 'default.html', "w");
 			$fileContents = $this->_request->getPost('htmlCode');
 			fwrite($handle, $fileContents);
 			fclose($handle);
 
-			if(isset($this->_request->getPost('html'))) {
+			if(isset($html)) {
 				$filesToZip[] = $filePath . 'default.html';
 			}
 
-			if(isset($this->_request->getPost('css'))) {
+			if(isset($css)) {
 				$filesToZip[] = $filePath . 'default.css';
 			}
 
-			if(isset($this->_request->getPost('javascript'))) {
+			if(isset($javascript)) {
 				$filesToZip[] = $filePath . 'default.js';
 			}
 			
 			//if true, good; if false, zip creation failed
-			$result = $fileModel->create_zip($files_to_zip,'my-archive.zip');
+			$this->view->result = $fileModel->createZip($filesToZip, TEMP_PATH . '/' . $_SESSION['key'] . '/user/teste.zip');
 		}
 	}
 
