@@ -116,14 +116,22 @@ class Model_File extends Core_Model
 		}
 
 		if(count($valid_files)) {
+			$curlModel = New Model_Curl();
 			$zip = new ZipArchive();
 			if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) === true) {
 				foreach($valid_files as $file) {
 					$tmp = explode($_SESSION['key'], $file);
 					$fileName = $tmp[1];
-					$zip->addFile('./',$fileName);
+					$zip->addFromString($fileName, $curlModel->curlRequestForFiles(PATH_PUBLIC.'/temp/'.$_SESSION['key'].$fileName));	
 				}
 				$zip->close();
+				$zip = new ZipArchive;
+				if ($zip->open($destination) === TRUE) {
+				    $zip->renameName('/user/default.txt','/user/default.html');
+				    $zip->close();
+				}
+				// _d($zip->getFromName('/user/default.txt'));
+				// $zip->renameName('/user/default.txt','/user/default.html');
 				return file_exists($destination);
 			} else {
 				return false;

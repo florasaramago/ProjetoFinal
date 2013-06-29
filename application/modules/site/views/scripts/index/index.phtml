@@ -84,13 +84,15 @@
 				</div>
 				<div id="third-controls">
 					<span class="control-section">Exportar arquivos:</span><br>
-					<form method="post" action="/index/export">
+					<form method="post" action="/index/export" id="export-form">
 						<input type="checkbox" class="library-checkbox control-option" name="html">HTML
 						<br>
 						<input type="checkbox" class="library-checkbox control-option" name="css">CSS <br>
 						<input type="checkbox" class="library-checkbox control-option" name="javascript">JavaScript
 						<br>
-						<input type="submit" class="gray-button small-button export" value="Exportar"/>
+						<input type="hidden" name="current-site" value="<?php echo $this->currentSite; ?>">
+						<input type="hidden" name="html-code" value="">
+						<input type="submit" id="export-button" class="gray-button small-button export" value="Exportar"/>
 					</form>
 				</div>
 		   </div>

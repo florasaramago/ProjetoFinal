@@ -10,7 +10,7 @@ class IndexController extends Core_Controller
 			//Get and correct URL
 			$url = $this->_request->getPost('url');
 			$url = $curlModel->correctUrl($url);
-
+			
 			//Get current user agent
 			$userAgent = $this->_request->getPost('user-agent');
 			
@@ -61,12 +61,14 @@ class IndexController extends Core_Controller
 				$this->view->css = $css['data'];
 				$this->view->contents = $contents;
 				$this->view->userAgent = $userAgent;
+				$this->view->currentSite = $fileModel->getHostFromUrl($url);
 				$this->view->post = 1;
 			}
 		} else {
 			$os = $this->_request->getParam('os');
 
 			$this->view->userAgent = $os ? $os : "ios";
+			$this->view->currentSite = "user";
 			$this->view->post = 0;
 		}
 	}
@@ -75,20 +77,21 @@ class IndexController extends Core_Controller
 		if($this->_request->isPost()) {
 			$fileModel = new Model_File();
 			$filesToZip = array();
+			$currentSite = $this->_request->getPost('current-site');
 
 			$html = $this->_request->getPost('html');
 			$css = $this->_request->getPost('css');
 			$javascript = $this->_request->getPost('javascript');
 
-			$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '/user/';
+			$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '/' . $currentSite . '/';
+			$fileContents = $this->_request->getPost('html-code');
 
-			$handle = fopen($filePath . 'default.html', "w");
-			$fileContents = $this->_request->getPost('htmlCode');
+			$handle = fopen($filePath . 'default.txt', "w");
 			fwrite($handle, $fileContents);
 			fclose($handle);
 
 			if(isset($html)) {
-				$filesToZip[] = $filePath . 'default.html';
+				$filesToZip[] = $filePath . 'default.txt';
 			}
 
 			if(isset($css)) {
@@ -100,7 +103,7 @@ class IndexController extends Core_Controller
 			}
 			
 			//if true, good; if false, zip creation failed
-			$this->view->result = $fileModel->createZip($filesToZip, TEMP_PATH . '/' . $_SESSION['key'] . '/user/teste.zip');
+			$this->view->result = $fileModel->createZip($filesToZip, TEMP_PATH.'/'.$_SESSION['key'].'/'.$currentSite.'/codigo.zip');
 		}
 	}
 

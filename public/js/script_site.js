@@ -370,6 +370,13 @@ $(document).ready(function()
 		dataType: "json"
 	});
 
+	//Export files
+	$('#export-button').on('click', function(e) {
+		e.preventDefault();
+		$("input[name='html-code']").val(htmlEditor.getValue());
+		$('#export-form').submit();
+	});
+
 	//Resize simulator
 	$('.resize').change(function() {
 		if($(this).is(":checked")) {
