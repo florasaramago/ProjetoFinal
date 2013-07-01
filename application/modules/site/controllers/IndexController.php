@@ -79,18 +79,20 @@ class IndexController extends Core_Controller
 				$fileModel = new Model_File();
 				$filesToZip = array();
 				$currentSite = $this->_request->getPost('current-site');
-
-				$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '/' . $currentSite . '/';
 				$fileContents = $this->_request->getPost('html-code');
+				$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '/' . $currentSite . '/';		
 
+				//Create text file with HTML content
 				$handle = fopen($filePath . 'default.txt', "w");
 				fwrite($handle, $fileContents);
 				fclose($handle);
 
+				//Add HTML to $filesToZip array
 				if($this->_request->getPost('html')) {
 					$filesToZip[] = $filePath . 'default.txt';
 				}
 
+				//Add CSS files to $filesToZip array
 				if($this->_request->getPost('css') && $this->_request->getPost('css-files')) {
 					if(strpos($this->_request->getPost('css-files'), ",")) {
 						$cssFiles = explode(",", $this->_request->getPost('css-files'));
@@ -111,6 +113,7 @@ class IndexController extends Core_Controller
 					}
 				}
 
+				//Add JavaScript files to $filesToZip array
 				if($this->_request->getPost('javascript') && $this->_request->getPost('js-files')) {
 					if(strpos($this->_request->getPost('js-files'), ",")) {
 						$jsFiles = explode(",", $this->_request->getPost('js-files'));
@@ -131,7 +134,7 @@ class IndexController extends Core_Controller
 					}
 				}
 				
-				// //if true, good; if false, zip creation failed
+				//Create zip
 				$response = $fileModel->createZip($filesToZip, TEMP_PATH.'/'.$_SESSION['key'].'/'.$currentSite.'/codigo.zip');
 				if($response) {
 					$this->_helper->json->sendJson($currentSite);
