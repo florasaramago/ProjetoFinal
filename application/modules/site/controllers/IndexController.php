@@ -74,37 +74,91 @@ class IndexController extends Core_Controller
 	}
 
 	public function exportAction() {
-		if($this->_request->isPost()) {
-			$fileModel = new Model_File();
-			$filesToZip = array();
-			$currentSite = $this->_request->getPost('current-site');
+		if ($this->_request->isXmlHttpRequest()) {
+			if($this->_request->isPost()) {
+				$fileModel = new Model_File();
+				$filesToZip = array();
+				$currentSite = $this->_request->getPost('current-site');
 
-			$html = $this->_request->getPost('html');
-			$css = $this->_request->getPost('css');
-			$javascript = $this->_request->getPost('javascript');
+				$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '/' . $currentSite . '/';
+				$fileContents = $this->_request->getPost('html-code');
 
-			$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '/' . $currentSite . '/';
-			$fileContents = $this->_request->getPost('html-code');
+				$handle = fopen($filePath . 'default.txt', "w");
+				fwrite($handle, $fileContents);
+				fclose($handle);
 
-			$handle = fopen($filePath . 'default.txt', "w");
-			fwrite($handle, $fileContents);
-			fclose($handle);
+				if($this->_request->getPost('html')) {
+					$filesToZip[] = $filePath . 'default.txt';
+				}
 
-			if(isset($html)) {
-				$filesToZip[] = $filePath . 'default.txt';
+				if($this->_request->getPost('css') && $this->_request->getPost('css-files')) {
+					if(strpos($this->_request->getPost('css-files'), ",")) {
+						$cssFiles = explode(",", $this->_request->getPost('css-files'));
+					} else if(strpos($this->_request->getPost('css-files'), ".css")) {
+						$cssFiles = $this->_request->getPost('css-files');
+					} else {
+						$cssFiles = NULL;
+					}
+
+					if($cssFiles) {
+						if(is_array($cssFiles)) {
+							foreach($cssFiles as $fileName) {
+								$filesToZip[] = $filePath . $fileName;
+							}
+						} else {
+							$filesToZip[] = $filePath . $cssFiles;
+						}	
+					}
+				}
+
+				if($this->_request->getPost('javascript') && $this->_request->getPost('js-files')) {
+					if(strpos($this->_request->getPost('js-files'), ",")) {
+						$jsFiles = explode(",", $this->_request->getPost('js-files'));
+					} else if(strpos($this->_request->getPost('js-files'), ".js")) {
+						$jsFiles = $this->_request->getPost('js-files');
+					} else {
+						$jsFiles = NULL;
+					}
+
+					if($jsFiles) {
+						if(is_array($jsFiles)) {
+							foreach($jsFiles as $fileName) {
+								$filesToZip[] = $filePath . $fileName;
+							}
+						} else {
+							$filesToZip[] = $filePath . $jsFiles;
+						}	
+					}
+				}
+				
+				// //if true, good; if false, zip creation failed
+				$response = $fileModel->createZip($filesToZip, TEMP_PATH.'/'.$_SESSION['key'].'/'.$currentSite.'/codigo.zip');
+				if($response) {
+					$this->_helper->json->sendJson($currentSite);
+				} 
+			} else {
+				exit;
 			}
-
-			if(isset($css)) {
-				$filesToZip[] = $filePath . 'default.css';
-			}
-
-			if(isset($javascript)) {
-				$filesToZip[] = $filePath . 'default.js';
-			}
-			
-			//if true, good; if false, zip creation failed
-			$this->view->result = $fileModel->createZip($filesToZip, TEMP_PATH.'/'.$_SESSION['key'].'/'.$currentSite.'/codigo.zip');
+		} else {
+			exit;
 		}
+	}
+
+	public function downloadAction()
+	{
+		$currentSite = $this->_request->getParam('site');
+		$zipFile = "http://projetofinal.dev/temp/".$_SESSION['key']."/".$currentSite."/codigo.zip";
+		ob_start();
+	   header('Content-Description: File Transfer');
+	   header('Content-Type: application/octet-stream');
+	   header('Content-Disposition: attachment; filename='.basename($zipFile));
+	   header('Content-Transfer-Encoding: binary');
+	   header('Expires: 0');
+	   header('Cache-Control: must-revalidate');
+	   header('Pragma: public');
+	   header('Content-Length: ' . filesize($zipFile));
+	   ob_clean();
+	   readfile($zipFile);
 	}
 
 	public function sessionKeyAction ()
@@ -121,6 +175,24 @@ class IndexController extends Core_Controller
 	}
 
 	public function updateFileAction ()
+	{
+		if ($this->_request->isXmlHttpRequest()) {
+			if($this->_request->isPost()) {
+				$fileModel = new Model_File();
+
+				$fileName = $this->_request->getPost('file');
+				$content = $this->_request->getPost('text');
+
+				$this->_helper->json->sendJson($fileModel->updateFile($fileName, $content));
+			} else {
+				exit;
+			}
+		} else {
+			exit;
+		}
+	}
+
+	public function updateTuntsAction ()
 	{
 		if ($this->_request->isXmlHttpRequest()) {
 			if($this->_request->isPost()) {

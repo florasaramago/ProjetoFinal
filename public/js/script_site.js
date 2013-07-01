@@ -371,10 +371,44 @@ $(document).ready(function()
 	});
 
 	//Export files
-	$('#export-button').on('click', function(e) {
-		e.preventDefault();
+	$('#export-button').on('click', function() {
 		$("input[name='html-code']").val(htmlEditor.getValue());
-		$('#export-form').submit();
+		var cssFiles = new Array();
+		var jsFiles = new Array();
+		var data = $('#export-form').serialize();
+
+		if($("input[name='css']").is(":checked")) {
+			$('#tabs-2').find('.sub-tab').each(function(index, element) {
+				cssFiles[index] = element.innerHTML;
+			});
+			if(cssFiles.length > 0) {
+				data += "&css-files="+cssFiles;
+			}
+		}
+
+		if($("input[name='javascript']").is(":checked")) {
+			$('#tabs-3').find('.sub-tab').each(function(index, element) {
+				jsFiles[index] = element.innerHTML;
+			});
+			if(jsFiles.length > 0) {
+				data += "&js-files="+jsFiles;
+			}
+		}
+
+		$.ajax({
+			url: '/index/export',
+			data: data,
+				success: function(response){
+					window.location = $('#download-link').attr('href') + "/site/" + response;
+				}, 
+				error: function (data) {
+					console.log(data.responseText);
+				},
+				complete: function(data) {
+				},
+			type: "POST", 
+			dataType: "json"
+		});
 	});
 
 	//Resize simulator

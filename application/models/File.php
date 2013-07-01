@@ -130,9 +130,7 @@ class Model_File extends Core_Model
 				    $zip->renameName('/user/default.txt','/user/default.html');
 				    $zip->close();
 				}
-				// _d($zip->getFromName('/user/default.txt'));
-				// $zip->renameName('/user/default.txt','/user/default.html');
-				return file_exists($destination);
+				return true;
 			} else {
 				return false;
 			}	

@@ -84,7 +84,7 @@
 				</div>
 				<div id="third-controls">
 					<span class="control-section">Exportar arquivos:</span><br>
-					<form method="post" action="/index/export" id="export-form">
+					<form id="export-form">
 						<input type="checkbox" class="library-checkbox control-option" name="html">HTML
 						<br>
 						<input type="checkbox" class="library-checkbox control-option" name="css">CSS <br>
@@ -92,8 +92,8 @@
 						<br>
 						<input type="hidden" name="current-site" value="<?php echo $this->currentSite; ?>">
 						<input type="hidden" name="html-code" value="">
-						<input type="submit" id="export-button" class="gray-button small-button export" value="Exportar"/>
 					</form>
+					<input type="submit" id="export-button" class="gray-button small-button export" value="Exportar"/>
 				</div>
 		   </div>
 		</div>
@@ -106,6 +106,7 @@
 		<iframe id="android-simulation" src="about:blank"></iframe>
 	</div>
 	<div class="clear"></div>
+	<a href="/index/download" id="download-link" class="hidden">Download</a>
 	
 	<div class="dark-background">
 		<img id="loader" src="/img/ajax-loader2.gif">
