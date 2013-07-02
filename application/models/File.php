@@ -104,4 +104,38 @@ class Model_File extends Core_Model
 			return $code;
 		}
 	}
+
+	public function createZip($files = array(), $destination = '', $overwrite = false) {
+		$valid_files = array();
+		if(is_array($files)) {
+			foreach($files as $file) {
+				if(file_exists($file)) {
+					$valid_files[] = $file;
+				}
+			}
+		}
+
+		if(count($valid_files)) {
+			$curlModel = New Model_Curl();
+			$zip = new ZipArchive();
+			if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) === true) {
+				foreach($valid_files as $file) {
+					$tmp = explode($_SESSION['key'], $file);
+					$fileName = $tmp[1];
+					$zip->addFromString($fileName, $curlModel->curlRequestForFiles(PATH_PUBLIC.'/temp/'.$_SESSION['key'].$fileName));	
+				}
+				$zip->close();
+				$zip = new ZipArchive;
+				if ($zip->open($destination) === TRUE) {
+				    $zip->renameName('/user/default.txt','/user/default.html');
+				    $zip->close();
+				}
+				return true;
+			} else {
+				return false;
+			}	
+		} else {
+			return false;
+		}
+	}
 }

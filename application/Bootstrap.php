@@ -71,6 +71,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 					if(mkdir($userPath, 0777)) {
 						$cssHandle = fopen($userPath . '/default.css', "w");
 						$jsHandle = fopen($userPath . '/default.js', "w");
+						$htmlHandle = fopen($userPath . '/default.txt', "w");
 
 						$_SESSION['cssHandle'] = $cssHandle;
 						$_SESSION['jsHandle'] = $jsHandle;
