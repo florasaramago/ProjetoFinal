@@ -61,12 +61,14 @@ class IndexController extends Core_Controller
 				$this->view->css = $css['data'];
 				$this->view->contents = $contents;
 				$this->view->userAgent = $userAgent;
+				$this->view->currentSite = $fileModel->getHostFromUrl($url);
 				$this->view->post = 1;
 			}
 		} else {
 			$os = $this->_request->getParam('os');
 
 			$this->view->userAgent = $os ? $os : "ios";
+			$this->view->currentSite = "user";
 			$this->view->post = 0;
 		}
 	}
