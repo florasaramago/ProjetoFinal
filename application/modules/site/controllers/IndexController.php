@@ -241,7 +241,8 @@ class IndexController extends Core_Controller
 				$htmlDOM = new simple_html_dom();
 				$htmlDOM->load($html, true, false);
 
-				$e = $htmlDOM->find("body", 0);
+				$e = $htmlDOM->find('body', 0);
+				_d($e);
 
 				if($lib == 'jquery') {
 					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/jquery-1.9.1.js\" id=\"jquery\"></script>";
@@ -251,7 +252,8 @@ class IndexController extends Core_Controller
 					$e->outertext = $e->outertext . "\n<script type=\"text/javaScript\" src=\"http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js\" id=\"jquery-mobile\"></script>";
 				}
 
-				$this->_helper->json->sendJson($htmlDOM->outertext);
+				// $this->_helper->json->sendJson($htmlDOM->outertext);
+				$this->_helper->json->sendJson($html);
 			} else {
 				exit;
 			}
