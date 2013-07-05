@@ -58,6 +58,19 @@ class Model_File extends Core_Model
 		return $contents;
 	}
 
+	public function putBackJsFiles($contents, $sources) 
+	{
+		$html = str_get_html($contents);
+		foreach($html->find('script') as $element) {
+			foreach($sources as $id => $source) {
+				if($element->href == $source) {
+					$contents = str_replace($element->src, $id, $contents);
+				}
+			}
+		}
+		return $contents;
+	}
+
 	public function replaceCssFiles($contents, $sources)
 	{
 		$html = str_get_html($contents);
@@ -65,6 +78,19 @@ class Model_File extends Core_Model
 			foreach($sources as $id => $source) {
 				if($element->href == $id) {
 					$contents = str_replace($element->href, $source, $contents);
+				}
+			}
+		}
+		return $contents;
+	}
+
+	public function putBackCssFiles($contents, $sources) 
+	{
+		$html = str_get_html($contents);
+		foreach($html->find('link[rel=stylesheet]') as $element) {
+			foreach($sources as $id => $source) {
+				if($element->href == $source) {
+					$contents = str_replace($element->href, $id, $contents);
 				}
 			}
 		}

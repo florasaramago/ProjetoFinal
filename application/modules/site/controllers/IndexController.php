@@ -47,11 +47,13 @@ class IndexController extends Core_Controller
 				//Replace original CSS references with respective copies
 				if(!empty($css['sources'])) {
 					$contents = $fileModel->replaceCssFiles($contents, $css['sources']);
+					$_SESSION['css_sources'] = $css['sources'];
 				}
 
 				//Replace original JavaScript references with respective copies
 				if(!empty($javascripts['sources'])) {
 					$contents = $fileModel->replaceJavascriptFiles($contents, $javascripts['sources']);
+					$_SESSION['js_sources'] = $javascripts['sources'];
 				}
 				
 				//Prevent iframe busting
@@ -81,6 +83,11 @@ class IndexController extends Core_Controller
 				$currentSite = $this->_request->getPost('current-site');
 				$fileContents = $this->_request->getPost('html-code');
 				$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '/' . $currentSite . '/';		
+
+				if($currentSite != 'user') {
+					$fileContents = $fileModel->putBackCssFiles($fileContents, $_SESSION['css_sources']);
+					$fileContents = $fileModel->putBackJsFiles($fileContents, $_SESSION['js_sources']);
+				}
 
 				//Create text file with HTML content
 				$handle = fopen($filePath . 'default.txt', "w");
