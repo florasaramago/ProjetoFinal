@@ -29,6 +29,11 @@ class Model_File extends Core_Model
 				$filePath = '/temp/' . $key . '/' . $host . '/' . $fileName;
 				$handle = fopen($hostPath . '/'. $fileName, "w");
 				$fileContents = $curlModel->curlRequestForFiles($urls[$id]);
+				if(strpos($fileName, ".css")) {
+					$hostParse = parse_url($url);
+					$assetsHost = $hostParse['host'];
+					$fileContents = str_replace("../", "http://".$assetsHost."/", $fileContents);
+				}
 				if(substr(strrchr($fileName, "."), 1) == "js") {
 					$fileContents = self::preventIframeBusting($fileContents);
 				}
