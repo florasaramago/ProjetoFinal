@@ -231,7 +231,6 @@ $(document).ready(function()
 						$('#third-controls').css('margin-left', '85px');
 						$('#user-agent-field').attr('value', 'ios');
 						iframe = document.getElementById('iphone-simulation');
-						updateSimulator();
 					} else if ($("input[name='sim-type']:checked").val() == 'android') {
 						currentPhone = "android";
 						$('#ios').addClass('hidden');
@@ -241,8 +240,13 @@ $(document).ready(function()
 						$('#third-controls').css('margin-left', '60px');
 						$('#user-agent-field').attr('value', 'android');
 						iframe = document.getElementById('android-simulation');
-						updateSimulator();
 					}
+					$('#ios').removeClass('smaller');
+					$('#android').removeClass('smaller');
+					if ($("input[name='sim-size']:checked").val() == 'small') {
+						$('#size-big').prop('checked', true).button("refresh");
+					}
+					updateSimulator();
 				});
 
 				//Add external libraries
