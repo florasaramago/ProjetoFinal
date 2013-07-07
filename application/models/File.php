@@ -158,7 +158,10 @@ class Model_File extends Core_Model
 				$zip->close();
 				$zip = new ZipArchive;
 				if ($zip->open($destination) === TRUE) {
-				    $zip->renameName('/user/default.txt','/user/default.html');
+					$tmp = explode('/', $fileName);
+					$currentSite = $tmp[1];
+					//_d('/'.$currentSite.'/default.txt'.' '.'/'.$currentSite.'/default.html');
+				    $zip->renameName('/'.$currentSite.'/default.txt', '/'.$currentSite.'/default.html');
 				    $zip->close();
 				}
 				return true;

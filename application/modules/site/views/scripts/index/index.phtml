@@ -102,7 +102,7 @@
 	<div id="ios" <?php if($this->userAgent == "android") echo 'class="hidden"'; ?>>
 		<iframe id="iphone-simulation" <?php if($this->post == 0) echo 'class="iphone-simulation-empty-page"'; ?> src="about:blank"></iframe>
 	</div>
-	<div id="android" <?php if($this->userAgent == "ios") echo 'class="hidden"'; ?>>
+	<div id="android" <?php if($this->userAgent == "ios" || !$this->userAgent) echo 'class="hidden"'; ?>>
 		<iframe id="android-simulation" src="about:blank"></iframe>
 	</div>
 	<div class="clear"></div>
