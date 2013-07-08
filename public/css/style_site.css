@@ -136,6 +136,8 @@ input[type=text]:focus, textarea:focus {
 	background-size: 464px 882px;
 	background-repeat: no-repeat;
 	background-image: url(../img/android.png);
+	width: 470px;
+	height: 882px;
 }
 
 #iphone-simulation {
@@ -179,6 +181,21 @@ input[type=text]:focus, textarea:focus {
 	margin-bottom: 140px;
 	margin-right: 32px;
 	margin-left: 32px;
+}
+
+.android-simulation-empty-page {
+	width: 810px !important;
+ 	height: 1365px !important;
+ 	-moz-transform: scale(0.495, 0.495); 
+    -webkit-transform: scale(0.495, 0.495); 
+    -o-transform: scale(0.495, 0.495);
+    -ms-transform: scale(0.495, 0.495);
+    transform: scale(0.495, 0.495);     
+	-moz-transform-origin: top left;
+    -webkit-transform-origin: top left;
+    -o-transform-origin: top left;
+    -ms-transform-origin: top left;
+    transform-origin: top left;
 }
 
 .clear { clear: both;}
