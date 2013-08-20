@@ -231,7 +231,6 @@ $(document).ready(function()
 						$('#third-controls').css('margin-left', '85px');
 						$('#user-agent-field').attr('value', 'ios');
 						iframe = document.getElementById('iphone-simulation');
-						updateSimulator();
 					} else if ($("input[name='sim-type']:checked").val() == 'android') {
 						currentPhone = "android";
 						$('#ios').addClass('hidden');
@@ -241,8 +240,13 @@ $(document).ready(function()
 						$('#third-controls').css('margin-left', '60px');
 						$('#user-agent-field').attr('value', 'android');
 						iframe = document.getElementById('android-simulation');
-						updateSimulator();
 					}
+					$('#ios').removeClass('smaller');
+					$('#android').removeClass('smaller');
+					if ($("input[name='sim-size']:checked").val() == 'small') {
+						$('#size-big').prop('checked', true).button("refresh");
+					}
+					updateSimulator();
 				});
 
 				//Add external libraries
@@ -368,6 +372,47 @@ $(document).ready(function()
 			},
 		type: "POST", 
 		dataType: "json"
+	});
+
+	//Export files
+	$('#export-button').on('click', function() {
+		$("input[name='html-code']").val(htmlEditor.getValue());
+		var cssFiles = new Array();
+		var jsFiles = new Array();
+		var data = $('#export-form').serialize();
+
+		if($("input[name='css']").is(":checked")) {
+			$('#tabs-2').find('.sub-tab').each(function(index, element) {
+				cssFiles[index] = element.innerHTML;
+			});
+			if(cssFiles.length > 0) {
+				data += "&css-files="+cssFiles;
+			}
+		}
+
+		if($("input[name='javascript']").is(":checked")) {
+			$('#tabs-3').find('.sub-tab').each(function(index, element) {
+				jsFiles[index] = element.innerHTML;
+			});
+			if(jsFiles.length > 0) {
+				data += "&js-files="+jsFiles;
+			}
+		}
+
+		$.ajax({
+			url: '/index/export',
+			data: data,
+				success: function(response){
+					window.location = $('#download-link').attr('href') + "/site/" + response;
+				}, 
+				error: function (data) {
+					console.log(data.responseText);
+				},
+				complete: function(data) {
+				},
+			type: "POST", 
+			dataType: "json"
+		});
 	});
 
 	//Resize simulator

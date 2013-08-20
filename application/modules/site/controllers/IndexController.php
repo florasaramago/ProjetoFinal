@@ -47,11 +47,13 @@ class IndexController extends Core_Controller
 				//Replace original CSS references with respective copies
 				if(!empty($css['sources'])) {
 					$contents = $fileModel->replaceCssFiles($contents, $css['sources']);
+					$_SESSION['css_sources'] = $css['sources'];
 				}
 
 				//Replace original JavaScript references with respective copies
 				if(!empty($javascripts['sources'])) {
 					$contents = $fileModel->replaceJavascriptFiles($contents, $javascripts['sources']);
+					$_SESSION['js_sources'] = $javascripts['sources'];
 				}
 				
 				//Prevent iframe busting
@@ -61,14 +63,112 @@ class IndexController extends Core_Controller
 				$this->view->css = $css['data'];
 				$this->view->contents = $contents;
 				$this->view->userAgent = $userAgent;
+				$this->view->currentSite = $fileModel->getHostFromUrl($url);
 				$this->view->post = 1;
 			}
 		} else {
 			$os = $this->_request->getParam('os');
 
 			$this->view->userAgent = $os ? $os : "ios";
+			$this->view->currentSite = "user";
 			$this->view->post = 0;
 		}
+	}
+
+	public function exportAction() {
+		if ($this->_request->isXmlHttpRequest()) {
+			if($this->_request->isPost()) {
+				$fileModel = new Model_File();
+				$filesToZip = array();
+				$currentSite = $this->_request->getPost('current-site');
+				$fileContents = $this->_request->getPost('html-code');
+				$filePath = TEMP_PATH . '/' . $_SESSION['key'] . '/' . $currentSite . '/';		
+
+				if($currentSite != 'user') {
+					$fileContents = $fileModel->putBackCssFiles($fileContents, $_SESSION['css_sources']);
+					$fileContents = $fileModel->putBackJsFiles($fileContents, $_SESSION['js_sources']);
+				}
+
+				//Create text file with HTML content
+				$handle = fopen($filePath . 'default.txt', "w");
+				fwrite($handle, $fileContents);
+				fclose($handle);
+
+				//Add HTML to $filesToZip array
+				if($this->_request->getPost('html')) {
+					$filesToZip[] = $filePath . 'default.txt';
+				}
+
+				//Add CSS files to $filesToZip array
+				if($this->_request->getPost('css') && $this->_request->getPost('css-files')) {
+					if(strpos($this->_request->getPost('css-files'), ",")) {
+						$cssFiles = explode(",", $this->_request->getPost('css-files'));
+					} else if(strpos($this->_request->getPost('css-files'), ".css")) {
+						$cssFiles = $this->_request->getPost('css-files');
+					} else {
+						$cssFiles = NULL;
+					}
+
+					if($cssFiles) {
+						if(is_array($cssFiles)) {
+							foreach($cssFiles as $fileName) {
+								$filesToZip[] = $filePath . $fileName;
+							}
+						} else {
+							$filesToZip[] = $filePath . $cssFiles;
+						}	
+					}
+				}
+
+				//Add JavaScript files to $filesToZip array
+				if($this->_request->getPost('javascript') && $this->_request->getPost('js-files')) {
+					if(strpos($this->_request->getPost('js-files'), ",")) {
+						$jsFiles = explode(",", $this->_request->getPost('js-files'));
+					} else if(strpos($this->_request->getPost('js-files'), ".js")) {
+						$jsFiles = $this->_request->getPost('js-files');
+					} else {
+						$jsFiles = NULL;
+					}
+
+					if($jsFiles) {
+						if(is_array($jsFiles)) {
+							foreach($jsFiles as $fileName) {
+								$filesToZip[] = $filePath . $fileName;
+							}
+						} else {
+							$filesToZip[] = $filePath . $jsFiles;
+						}	
+					}
+				}
+				
+				//Create zip
+				$response = $fileModel->createZip($filesToZip, TEMP_PATH.'/'.$_SESSION['key'].'/'.$currentSite.'/codigo.zip');
+				if($response) {
+					$this->_helper->json->sendJson($currentSite);
+				} 
+			} else {
+				exit;
+			}
+		} else {
+			exit;
+		}
+	}
+
+	public function downloadAction()
+	{
+		$currentSite = $this->_request->getParam('site');
+		$zipFile = "http://projetofinal.dev/temp/".$_SESSION['key']."/".$currentSite."/codigo.zip";
+		ob_start();
+	   header('Content-Description: File Transfer');
+	   header('Content-Type: application/octet-stream');
+	   header('Content-Disposition: attachment; filename='.basename($zipFile));
+	   header('Content-Transfer-Encoding: binary');
+	   header('Expires: 0');
+	   header('Cache-Control: must-revalidate');
+	   header('Pragma: public');
+	   header('Content-Length: ' . filesize($zipFile));
+	   ob_clean();
+	   readfile($zipFile);
 	}
 
 	public function sessionKeyAction ()

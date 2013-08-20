@@ -79,29 +79,35 @@
 				<div id="second-controls">
 					<button id="clear-editor" class="gray-button big-button">Limpar editor</button><br><br>
 					<span class="control-section">Tamanho do simulador:</span><br>
-					<input type="radio" class="resize control-option" value="big" name="sim-size" checked="checked"> Grande<br>
+					<input type="radio" id="size-big" class="resize control-option" value="big" name="sim-size" checked="checked"> Grande<br>
 					<input type="radio" class="resize control-option" value="small" name="sim-size"> Pequeno<br>
 				</div>
 				<div id="third-controls">
 					<span class="control-section">Exportar arquivos:</span><br>
-					<input type="checkbox" class="library-checkbox control-option" id="jquery" value="jquery">HTML
-					<br>
-					<input type="checkbox" class="library-checkbox control-option" id="jquery-ui" value="jquery-ui">CSS <br>
-					<input type="checkbox" class="library-checkbox control-option" id="jquery-mobile" value="jquery-mobile">JavaScript
-					<br>
-					<input type="submit" class="gray-button small-button export" value="Exportar"/>
+					<form id="export-form">
+						<input type="checkbox" class="library-checkbox control-option" name="html">HTML
+						<br>
+						<input type="checkbox" class="library-checkbox control-option" name="css">CSS <br>
+						<input type="checkbox" class="library-checkbox control-option" name="javascript">JavaScript
+						<br>
+						<input type="hidden" name="current-site" value="<?php echo $this->currentSite; ?>">
+						<input type="hidden" name="html-code" value="">
+					</form>
+					<input type="submit" id="export-button" class="gray-button small-button export" value="Exportar"/>
 				</div>
 		   </div>
 		</div>
 	</div>
 	
 	<div id="ios" <?php if($this->userAgent == "android") echo 'class="hidden"'; ?>>
-		<iframe id="iphone-simulation" src="about:blank"></iframe>
+		<iframe id="iphone-simulation" <?php if($this->post == 0) echo 'class="iphone-simulation-empty-page"'; ?> src="about:blank"></iframe>
 	</div>
-	<div id="android" <?php if($this->userAgent == "ios") echo 'class="hidden"'; ?>>
-		<iframe id="android-simulation" src="about:blank"></iframe>
+	<div id="android" <?php if($this->userAgent == "ios" || !$this->userAgent) echo 'class="hidden"'; ?>>
+		<iframe id="android-simulation" <?php if($this->post == 0) echo 'class="android-simulation-empty-page"'; ?> src="about:blank"></iframe>
 	</div>
 	<div class="clear"></div>
+
+	<a href="/index/download" id="download-link" class="hidden">Download</a>
 	
 	<div class="dark-background">
 		<img id="loader" src="/img/ajax-loader2.gif">

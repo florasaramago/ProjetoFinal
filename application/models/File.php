@@ -29,6 +29,11 @@ class Model_File extends Core_Model
 				$filePath = '/temp/' . $key . '/' . $host . '/' . $fileName;
 				$handle = fopen($hostPath . '/'. $fileName, "w");
 				$fileContents = $curlModel->curlRequestForFiles($urls[$id]);
+				if(strpos($fileName, ".css")) {
+					$hostParse = parse_url($url);
+					$assetsHost = $hostParse['host'];
+					$fileContents = str_replace("../", "http://".$assetsHost."/", $fileContents);
+				}
 				if(substr(strrchr($fileName, "."), 1) == "js") {
 					$fileContents = self::preventIframeBusting($fileContents);
 				}
@@ -58,6 +63,19 @@ class Model_File extends Core_Model
 		return $contents;
 	}
 
+	public function putBackJsFiles($contents, $sources) 
+	{
+		$html = str_get_html($contents);
+		foreach($html->find('script') as $element) {
+			foreach($sources as $id => $source) {
+				if($element->href == $source) {
+					$contents = str_replace($element->src, $id, $contents);
+				}
+			}
+		}
+		return $contents;
+	}
+
 	public function replaceCssFiles($contents, $sources)
 	{
 		$html = str_get_html($contents);
@@ -65,6 +83,19 @@ class Model_File extends Core_Model
 			foreach($sources as $id => $source) {
 				if($element->href == $id) {
 					$contents = str_replace($element->href, $source, $contents);
+				}
+			}
+		}
+		return $contents;
+	}
+
+	public function putBackCssFiles($contents, $sources) 
+	{
+		$html = str_get_html($contents);
+		foreach($html->find('link[rel=stylesheet]') as $element) {
+			foreach($sources as $id => $source) {
+				if($element->href == $source) {
+					$contents = str_replace($element->href, $id, $contents);
 				}
 			}
 		}
@@ -102,6 +133,43 @@ class Model_File extends Core_Model
 			return str_replace("top.location", "", $code);
 		} else {
 			return $code;
+		}
+	}
+
+	public function createZip($files = array(), $destination = '', $overwrite = false) {
+		$valid_files = array();
+		if(is_array($files)) {
+			foreach($files as $file) {
+				if(file_exists($file)) {
+					$valid_files[] = $file;
+				}
+			}
+		}
+
+		if(count($valid_files)) {
+			$curlModel = New Model_Curl();
+			$zip = new ZipArchive();
+			if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) === true) {
+				foreach($valid_files as $file) {
+					$tmp = explode($_SESSION['key'], $file);
+					$fileName = $tmp[1];
+					$zip->addFromString($fileName, $curlModel->curlRequestForFiles(PATH_PUBLIC.'/temp/'.$_SESSION['key'].$fileName));	
+				}
+				$zip->close();
+				$zip = new ZipArchive;
+				if ($zip->open($destination) === TRUE) {
+					$tmp = explode('/', $fileName);
+					$currentSite = $tmp[1];
+					//_d('/'.$currentSite.'/default.txt'.' '.'/'.$currentSite.'/default.html');
+				    $zip->renameName('/'.$currentSite.'/default.txt', '/'.$currentSite.'/default.html');
+				    $zip->close();
+				}
+				return true;
+			} else {
+				return false;
+			}	
+		} else {
+			return false;
 		}
 	}
 }
